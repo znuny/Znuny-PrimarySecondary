@@ -4,7 +4,7 @@
     <Version>6.3.1</Version>
     <ChangeLog Version="6.3.1" Date="2022-03-18 09:25:32 +0100">Ported to 6.3</ChangeLog>
     <ChangeLog Version="6.2.1" Date="2021-11-09 10:55:12 +0100">Ported to 6.2</ChangeLog>
-    <Framework>6.2.x</Framework>
+    <Framework>6.3.x</Framework>
     <Vendor>Znuny</Vendor>
     <URL>https://www.znuny.org/</URL>
     <License>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</License>
