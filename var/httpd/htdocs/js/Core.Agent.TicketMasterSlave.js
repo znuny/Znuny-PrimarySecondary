@@ -2,7 +2,7 @@
 // Copyright (C) 2001-2021 OTRS AG, https://otrs.com/
 // Copyright (C) 2021-2022 Znuny GmbH, https://znuny.org/
 // --
-// $origin: otrs - 8207d0f681adcdeb5c1b497ac547a1d9749838d5 - var/httpd/htdocs/js/Core.Agent.TicketActionCommon.js
+// $origin: znuny - 460ef44565300c6b979b0743833e3800fdbebf81 - var/httpd/htdocs/js/Core.Agent.TicketActionCommon.js
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (GPL). If you

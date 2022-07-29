@@ -2,7 +2,7 @@
 # Copyright (C) 2001-2021 OTRS AG, https://otrs.com/
 # Copyright (C) 2021-2022 Znuny GmbH, https://znuny.org/
 # --
-# $origin: otrs - 61764fc3cfd0e81cd5f6dbcf08115e12240f412d - Kernel/Modules/AgentTicketActionCommon.pm
+# $origin: znuny - 460ef44565300c6b979b0743833e3800fdbebf81 - Kernel/Modules/AgentTicketActionCommon.pm
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1509,8 +1509,8 @@ sub Run {
                 my %AllStdAttachments = $StdAttachmentObject->StdAttachmentStandardTemplateMemberList(
                     StandardTemplateID => $GetParam{StandardTemplateID},
                 );
-                for ( sort keys %AllStdAttachments ) {
-                    my %AttachmentsData = $StdAttachmentObject->StdAttachmentGet( ID => $_ );
+                for my $ID ( sort keys %AllStdAttachments ) {
+                    my %AttachmentsData = $StdAttachmentObject->StdAttachmentGet( ID => $ID );
                     $UploadCacheObject->FormIDAddFile(
                         FormID      => $Self->{FormID},
                         Disposition => 'attachment',
@@ -2705,18 +2705,9 @@ sub _Mask {
 
         # show time accounting box
         if ( $ConfigObject->Get('Ticket::Frontend::AccountTime') ) {
-            if ( $ConfigObject->Get('Ticket::Frontend::NeedAccountedTime') ) {
-                $LayoutObject->Block(
-                    Name => 'TimeUnitsLabelMandatory',
-                    Data => \%Param,
-                );
-            }
-            else {
-                $LayoutObject->Block(
-                    Name => 'TimeUnitsLabel',
-                    Data => \%Param,
-                );
-            }
+            $Param{TimeUnitsBlock} = $LayoutObject->TimeUnits(
+                %Param,
+            );
             $LayoutObject->Block(
                 Name => 'TimeUnits',
                 Data => \%Param,
@@ -3073,10 +3064,10 @@ sub _GetQuotedReplyBody {
                         ": $Param{CreateTime}<br/>" . $Param{Body};
                 }
 
-                for (qw(Subject ReplyTo Reply-To Cc To From)) {
-                    if ( $Param{$_} ) {
-                        $Param{Body} = $LayoutObject->{LanguageObject}->Translate($_) .
-                            ": $Param{$_}<br/>" . $Param{Body};
+                for my $Key (qw(Subject ReplyTo Reply-To Cc To From)) {
+                    if ( $Param{$Key} ) {
+                        $Param{Body} = $LayoutObject->{LanguageObject}->Translate($Key) .
+                            ": $Param{$Key}<br/>" . $Param{Body};
                     }
                 }
 
@@ -3118,10 +3109,10 @@ sub _GetQuotedReplyBody {
                         ": $Param{CreateTime}\n" . $Param{Body};
                 }
 
-                for (qw(Subject ReplyTo Reply-To Cc To From)) {
-                    if ( $Param{$_} ) {
-                        $Param{Body} = $LayoutObject->{LanguageObject}->Translate($_) .
-                            ": $Param{$_}\n" . $Param{Body};
+                for my $Key (qw(Subject ReplyTo Reply-To Cc To From)) {
+                    if ( $Param{$Key} ) {
+                        $Param{Body} = $LayoutObject->{LanguageObject}->Translate($Key) .
+                            ": $Param{$Key}\n" . $Param{Body};
                     }
                 }
 

@@ -2,7 +2,7 @@
 # Copyright (C) 2001-2021 OTRS AG, https://otrs.com/
 # Copyright (C) 2021-2022 Znuny GmbH, https://znuny.org/
 # --
-# $origin: otrs - 8207d0f681adcdeb5c1b497ac547a1d9749838d5 - Kernel/Output/HTML/Templates/Standard/AgentTicketActionCommon.tt
+# $origin: znuny - 460ef44565300c6b979b0743833e3800fdbebf81 - Kernel/Output/HTML/Templates/Standard/AgentTicketActionCommon.tt
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -423,19 +423,8 @@
                             </div>
                             <div class="Clear"></div>
 
-[% RenderBlockStart("TimeUnitsLabel") %]
-                            <label for="TimeUnits">[% Translate("Time units") | html %] [% Translate(Config("Ticket::Frontend::TimeUnits")) | html %]:</label>
-[% RenderBlockEnd("TimeUnitsLabel") %]
-[% RenderBlockStart("TimeUnitsLabelMandatory") %]
-                            <label class="Mandatory" for="TimeUnits"><span class="Marker">*</span>[% Translate("Time units") | html %] [% Translate(Config("Ticket::Frontend::TimeUnits")) | html %]:</label>
-[% RenderBlockEnd("TimeUnitsLabelMandatory") %]
 [% RenderBlockStart("TimeUnits") %]
-                            <div class="Field">
-                                <input type="text" name="TimeUnits" id="TimeUnits" value="[% Data.TimeUnits | html %]" class="W50pc Validate_TimeUnits [% Data.TimeUnitsRequired | html %] [% Data.TimeUnitsInvalid | html %]"/>
-                                <div id="TimeUnitsError" class="TooltipErrorMessage"><p>[% Translate("Invalid time!") | html %]</p></div>
-                                <div id="TimeUnitsServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
-                            </div>
-                            <div class="Clear"></div>
+                            [% Data.TimeUnitsBlock %]
 [% RenderBlockEnd("TimeUnits") %]
 
 [% RenderBlockStart("ArticleTypeDynamicField") %]
