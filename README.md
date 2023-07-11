@@ -3,7 +3,7 @@
 
 Znuny-PrimarySecondary
 ======================
-This package contains the functionality of primary and secondary tickets. Primary tickets can be used to update multiple (secondary) tickets at once. Read the complete documentaiton in the repository [documentation](https://github.com/znuny/Znuny-PrimarySecondary/tree/dev/doc/en) or download the PDF from the package manager after installation.
+This package contains the functionality of primary and secondary tickets. Primary tickets can be used to update multiple (secondary) tickets at once. Read the complete documentation in the repository [documentation](https://github.com/znuny/Znuny-PrimarySecondary/tree/dev/doc/en) or download the PDF from the package manager after installation.
 
 **Prerequisites**
 
