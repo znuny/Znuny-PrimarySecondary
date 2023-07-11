@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otrs_package version="1.0">
+    <Name>Znuny-PrimarySecondary</Name>
+    <Version>6.5.1</Version>
+    <Framework>6.5.x</Framework>
+    <Vendor>Znuny GmbH</Vendor>
+    <URL>https://www.znuny.org/</URL>
+    <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
+    <Description Lang="en">Includes "Ticket Primary/Secondary" feature.</Description>
+    <Description Lang="de">Enthält "Ticket Primary/Secondary" Funktionalität.</Description>
+    <ChangeLog Version="6.5.1" Date="2023-02-20 14:58:45 +0100">Initital release for Znuny 6.5.</ChangeLog>
+    <ChangeLog Version="6.4.1" Date="2022-07-29 11:18:50 +0200">Initital release for Znuny 6.4.</ChangeLog>
+    <ChangeLog Version="6.3.2" Date="2022-03-20 10:35:41 +0100">Fixed framework version</ChangeLog>
+    <ChangeLog Version="6.3.1" Date="2022-03-18 09:25:32 +0100">Ported to 6.3</ChangeLog>
+    <ChangeLog Version="6.2.1" Date="2021-11-09 10:55:12 +0100">Ported to 6.2</ChangeLog>
+    <Filelist>
+        <File Permission="660" Location="Kernel/Config/Files/XML/ZnunyPrimarySecondary.xml"/>
+        <File Permission="660" Location="Kernel/Language/cs_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/de_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/es_MX_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/es_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/fr_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/gl_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/hu_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/id_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/it_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/ja_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/ms_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/pl_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/pt_BR_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/pt_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/ru_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/sr_Cyrl_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/sr_Latn_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/sv_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/sw_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/th_TH_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Language/zh_CN_ZnunyPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Modules/AdminDynamicFieldPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Modules/AgentPrePrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Modules/AgentTicketPrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/Output/HTML/Templates/Standard/AdminDynamicFieldPrimarySecondary.tt"/>
+        <File Permission="660" Location="Kernel/Output/HTML/Templates/Standard/AgentTicketPrimarySecondary.tt"/>
+        <File Permission="660" Location="Kernel/Output/HTML/TicketBulk/PrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/System/DynamicField/Driver/PrimarySecondary.pm"/>
+        <File Permission="660" Location="Kernel/System/Ticket/Event/PrimarySecondary.pm"/>
+        <File Permission="660" Location="scripts/test/DynamicField/PrimarySecondary/EditFieldRender.t"/>
+        <File Permission="660" Location="scripts/test/DynamicField/PrimarySecondary/ValueSet.t"/>
+        <File Permission="660" Location="scripts/test/Selenium/Agent/Admin/GenericAgent/PrimarySecondarySelection.t"/>
+        <File Permission="660" Location="scripts/test/Selenium/Agent/AgentTicketCreatePrimarySecondary.t"/>
+        <File Permission="660" Location="scripts/test/Selenium/Agent/AgentTicketPrimarySecondary.t"/>
+        <File Permission="660" Location="scripts/test/Selenium/Agent/AgentTicketSecondarySalutation.t"/>
+        <File Permission="660" Location="scripts/test/Selenium/Output/TicketBulk/PrimarySecondary.t"/>
+        <File Permission="660" Location="scripts/test/Ticket/Event/PrimarySecondary.t"/>
+        <File Permission="660" Location="scripts/test/Ticket/Event/PrimarySecondary/ReplaceCustomerRealName.t"/>
+        <File Permission="660" Location="var/httpd/htdocs/js/Core.Agent.Admin.DynamicFieldPrimarySecondary.js"/>
+        <File Permission="660" Location="var/httpd/htdocs/js/Core.Agent.TicketPrimarySecondary.js"/>
+        <File Permission="660" Location="var/packagesetup/ZnunyPrimarySecondary.pm"/>
+    </Filelist>
+    <CodeInstall Type="post"><![CDATA[
+        $Kernel::OM->Get('var::packagesetup::ZnunyPrimarySecondary')->CodeInstall();
+    ]]></CodeInstall>
+    <CodeUpgrade Type="post"><![CDATA[
+        $Kernel::OM->Get('var::packagesetup::ZnunyPrimarySecondary')->CodeUpgrade();
+    ]]></CodeUpgrade>
+    <CodeReinstall Type="post"><![CDATA[
+        $Kernel::OM->Get('var::packagesetup::ZnunyPrimarySecondary')->CodeReinstall();
+    ]]></CodeReinstall>
+    <CodeUninstall Type="pre"><![CDATA[
+        $Kernel::OM->Get('var::packagesetup::ZnunyPrimarySecondary')->CodeUninstall();
+    ]]></CodeUninstall>
+    <PackageMerge Name="OTRSMasterSlave" TargetVersion="6.5.1"/>
+</otrs_package>
