@@ -19,41 +19,44 @@ my $Selenium = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
 $Selenium->RunTest(
     sub {
 
-        my $Helper       = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        my $HelperObject = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
         my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $UserObject   = $Kernel::OM->Get('Kernel::System::User');
+        my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+        my $CacheObject  = $Kernel::OM->Get('Kernel::System::Cache');
 
         # Enable the advanced PrimarySecondary.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'PrimarySecondary::AdvancedEnabled',
             Value => 1,
         );
 
         # Enable change the PrimarySecondary state of a ticket.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'PrimarySecondary::UpdatePrimarySecondary',
             Value => 1,
         );
 
         # Do not send emails.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'SendmailModule',
             Value => 'Kernel::System::Email::Test',
         );
 
         # Create test user.
-        my $TestUserLogin = $Helper->TestUserCreate(
+        my $TestUserLogin = $HelperObject->TestUserCreate(
             Groups => [ 'admin', 'users' ],
         ) || die "Did not get test user";
 
         # Get test user ID.
-        my $TestUserID = $Kernel::OM->Get('Kernel::System::User')->UserLookup(
+        my $TestUserID = $UserObject->UserLookup(
             UserLogin => $TestUserLogin,
         );
 
         # Create three test tickets.
         my @TicketIDs;
         my @TicketNumbers;
-        my $TicketTitle = 'PrimarySecondary ' . $Helper->GetRandomID();
+        my $TicketTitle = 'PrimarySecondary ' . $HelperObject->GetRandomID();
         for my $TicketCreate ( 1 .. 3 ) {
             my $TicketNumber = $TicketObject->TicketCreateNumber();
             my $TicketID     = $TicketObject->TicketCreate(
@@ -85,7 +88,7 @@ $Selenium->RunTest(
             Password => $TestUserLogin,
         );
 
-        my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
+        my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
 
         # Navigate to AgentTicketSearch.
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketSearch");
@@ -210,7 +213,7 @@ $Selenium->RunTest(
         }
 
         # Make sure the cache is correct.
-        $Kernel::OM->Get('Kernel::System::Cache')->CleanUp(
+        $CacheObject->CleanUp(
             Type => 'Ticket',
         );
     }

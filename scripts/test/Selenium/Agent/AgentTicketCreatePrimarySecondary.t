@@ -30,46 +30,48 @@ my $WaitForAJAX = sub {
 $Selenium->RunTest(
     sub {
 
-        my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        my $HelperObject = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+        my $CacheObject  = $Kernel::OM->Get('Kernel::System::Cache');
 
         # Enable the advanced PrimarySecondary.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'PrimarySecondary::AdvancedEnabled',
             Value => 1,
         );
 
         # Do not check RichText.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'Frontend::RichText',
             Value => 0,
         );
 
         # Do not check service and type.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'Ticket::Service',
             Value => 0
         );
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'Ticket::Type',
             Value => 0,
         );
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Valid => 1,
             Key   => 'CheckEmailAddresses',
             Value => 0,
         );
 
         # Do not send emails.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'SendmailModule',
             Value => 'Kernel::System::Email::Test',
         );
 
         # Add test customer for testing.
-        my $TestCustomerLoginPhone = $Helper->TestCustomerUserCreate();
+        my $TestCustomerLoginPhone = $HelperObject->TestCustomerUserCreate();
 
         # Create test user and login.
-        my $TestUserLogin = $Helper->TestUserCreate(
+        my $TestUserLogin = $HelperObject->TestUserCreate(
             Groups => [ 'admin', 'users' ],
         ) || die "Did not get test user";
 
@@ -79,7 +81,7 @@ $Selenium->RunTest(
             Password => $TestUserLogin,
         );
 
-        my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
+        my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
 
         # Navigate to AgentTicketPhone screen.
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketPhone");
@@ -145,7 +147,7 @@ $Selenium->RunTest(
         );
 
         # Add new test customer for testing.
-        my $TestCustomerLoginsEmail = $Helper->TestCustomerUserCreate();
+        my $TestCustomerLoginsEmail = $HelperObject->TestCustomerUserCreate();
 
         # Navigate to AgentTicketEmail screen.
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketEmail");
@@ -267,7 +269,7 @@ $Selenium->RunTest(
         }
 
         # Make sure the cache is correct.
-        $Kernel::OM->Get('Kernel::System::Cache')->CleanUp(
+        $CacheObject->CleanUp(
             Type => 'Ticket',
         );
     }

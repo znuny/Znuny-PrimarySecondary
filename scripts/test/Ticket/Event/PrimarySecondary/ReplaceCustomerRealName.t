@@ -103,7 +103,8 @@ $Self->True(
     "TicketCreate() Ticket ID $PrimaryTicketID",
 );
 
-my $EmailBackendObject = $Kernel::OM->Get('Kernel::System::Ticket::Article')->BackendForChannel(
+my $ArticleObject      = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+my $EmailBackendObject = $ArticleObject->BackendForChannel(
     ChannelName => 'Email',
 );
 
@@ -126,7 +127,7 @@ $Self->True(
     "ArticleCreate() Article ID $ArticleID",
 );
 
-my $DynamicField = $Kernel::OM->Get('Kernel::System::DynamicField')->DynamicFieldGet(
+my $DynamicField = $DynamicFieldObject->DynamicFieldGet(
     ID => $PrimarySecondaryDynamicFieldData->{ID},
 );
 
@@ -193,8 +194,6 @@ my @Tests = (
         Match => "$TestCustomerUserLogin2 $TestCustomerUserLogin2",
     },
 );
-
-my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
 TEST:
 for my $Test (@Tests) {

@@ -20,38 +20,42 @@ my $Selenium = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
 
 $Selenium->RunTest(
     sub {
-        my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        my $HelperObject = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
         my $TicketObject       = $Kernel::OM->Get('Kernel::System::Ticket');
         my $ArticleObject      = $Kernel::OM->Get('Kernel::System::Ticket::Article');
         my $QueueObject        = $Kernel::OM->Get('Kernel::System::Queue');
         my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
+        my $SalutationObject   = $Kernel::OM->Get('Kernel::System::Salutation');
+        my $CustomerUserObject = $Kernel::OM->Get('Kernel::System::CustomerUser');
+        my $ConfigObject       = $Kernel::OM->Get('Kernel::Config');
+        my $UserObject         = $Kernel::OM->Get('Kernel::System::User');
 
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Valid => 1,
             Key   => 'CheckMXRecord',
             Value => 0,
         );
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Valid => 1,
             Key   => 'CheckEmailAddresses',
             Value => 0,
         );
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'SendmailModule',
             Value => 'Kernel::System::Email::Test',
         );
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Valid => 1,
             Key   => 'PrimarySecondary::ForwardSecondary',
             Value => 1,
         );
 
-        my $RandomID = $Helper->GetRandomID();
+        my $RandomID = $HelperObject->GetRandomID();
 
         # Create test salutation using rich text.
         my $SalutationText = "<strong>Test Bold ${RandomID} </strong>";
-        my $SalutationID   = $Kernel::OM->Get('Kernel::System::Salutation')->SalutationAdd(
+        my $SalutationID   = $SalutationObject->SalutationAdd(
             Name        => "New Salutation $RandomID",
             Text        => $SalutationText,
             ContentType => 'text/html',
@@ -97,8 +101,8 @@ $Selenium->RunTest(
             );
         }
 
-        my $TestCustomerUserLogin = $Helper->TestCustomerUserCreate();
-        my %TestCustomerUser      = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserDataGet(
+        my $TestCustomerUserLogin = $HelperObject->TestCustomerUserCreate();
+        my %TestCustomerUser      = $CustomerUserObject->CustomerUserDataGet(
             User => $TestCustomerUserLogin,
         );
 
@@ -138,12 +142,12 @@ $Selenium->RunTest(
         );
 
         # Get Primary/Secondary dynamic field data.
-        my $PrimarySecondaryDynamicField = $Kernel::OM->Get('Kernel::Config')->Get('PrimarySecondary::DynamicField');
+        my $PrimarySecondaryDynamicField     = $ConfigObject->Get('PrimarySecondary::DynamicField');
         my $PrimarySecondaryDynamicFieldData = $DynamicFieldObject->DynamicFieldGet(
             Name => $PrimarySecondaryDynamicField,
         );
 
-        my $DynamicField = $Kernel::OM->Get('Kernel::System::DynamicField')->DynamicFieldGet(
+        my $DynamicField = $DynamicFieldObject->DynamicFieldGet(
             ID => $PrimarySecondaryDynamicFieldData->{ID},
         );
 
@@ -191,12 +195,12 @@ $Selenium->RunTest(
         );
 
         # Create test user.
-        my $TestUserLogin = $Helper->TestUserCreate(
+        my $TestUserLogin = $HelperObject->TestUserCreate(
             Groups => [ 'admin', 'users' ],
         );
 
         # Get test user ID.
-        my $TestUserID = $Kernel::OM->Get('Kernel::System::User')->UserLookup(
+        my $TestUserID = $UserObject->UserLookup(
             UserLogin => $TestUserLogin,
         );
 
@@ -207,7 +211,7 @@ $Selenium->RunTest(
             Password => $TestUserLogin,
         );
 
-        my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
+        my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
 
         # Navigate to AgentTicketCompose screen.
         $Selenium->VerifiedGet(

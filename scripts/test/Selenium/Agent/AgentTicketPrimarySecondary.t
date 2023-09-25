@@ -21,35 +21,38 @@ my $Selenium = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
 $Selenium->RunTest(
     sub {
 
-        my $Helper       = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
-        my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $HelperObject       = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        my $TicketObject       = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $UserObject         = $Kernel::OM->Get('Kernel::System::User');
+        my $ConfigObject       = $Kernel::OM->Get('Kernel::Config');
+        my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
 
         # Enable the advanced PrimarySecondary.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'PrimarySecondary::AdvancedEnabled',
             Value => 1,
         );
 
         # Enable change the PrimarySecondary state of a ticket.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'PrimarySecondary::UpdatePrimarySecondary',
             Value => 1,
         );
 
         # Do not check RichText.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'Frontend::RichText',
             Value => 0,
         );
 
         # Do not send emails.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'SendmailModule',
             Value => 'Kernel::System::Email::Test',
         );
 
         # Disable Type feature.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Type',
             Value => 0,
@@ -57,28 +60,28 @@ $Selenium->RunTest(
 
         # Make sure InvovedAgent and InformAgent are disabled, otherwise it uses part of the visible
         # Screen making the submit button not visible and then not click-able.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'Ticket::Frontend::AgentTicketPrimarySecondary###InvolvedAgent',
             Value => 0,
         );
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'Ticket::Frontend::AgentTicketPrimarySecondary###InformAgent',
             Value => 0,
         );
 
         # Make sure Note is enabled in AgentTicketPrimarySecondary screen.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'Ticket::Frontend::AgentTicketPrimarySecondary###Note',
             Value => 1,
         );
 
         # Create test user.
-        my $TestUserLogin = $Helper->TestUserCreate(
+        my $TestUserLogin = $HelperObject->TestUserCreate(
             Groups => [ 'admin', 'users' ],
         ) || die "Did not get test user";
 
         # Get test user ID.
-        my $TestUserID = $Kernel::OM->Get('Kernel::System::User')->UserLookup(
+        my $TestUserID = $UserObject->UserLookup(
             UserLogin => $TestUserLogin,
         );
 
@@ -116,7 +119,7 @@ $Selenium->RunTest(
             Password => $TestUserLogin,
         );
 
-        my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
+        my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
 
         # Navigate to ticket zoom page of first created test ticket.
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketZoom;TicketID=$TicketIDs[0]");
@@ -241,7 +244,7 @@ $Selenium->RunTest(
 
         # Disable Note in AgentTicketPrimarySecondary screen and
         # check if PrimarySecondary dynamic field is shown in the screen (see bug#14780).
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'Ticket::Frontend::AgentTicketPrimarySecondary###Note',
             Value => 0,
         );
@@ -295,8 +298,8 @@ $Selenium->RunTest(
             },
         );
 
-        my $PrimarySecondaryDFName = $Kernel::OM->Get('Kernel::Config')->Get('PrimarySecondary::DynamicField') || '';
-        my $DynamicField           = $Kernel::OM->Get('Kernel::System::DynamicField')->DynamicFieldGet(
+        my $PrimarySecondaryDFName = $ConfigObject->Get('PrimarySecondary::DynamicField') || '';
+        my $DynamicField           = $DynamicFieldObject->DynamicFieldGet(
             Name => $PrimarySecondaryDFName,
         );
         my $DynamicFieldBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
@@ -342,7 +345,7 @@ $Selenium->RunTest(
         );
 
         # Enable config "PrimarySecondary::UnsetPrimarySecondary".
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'PrimarySecondary::UnsetPrimarySecondary',
             Value => 1,
         );
@@ -389,7 +392,7 @@ $Selenium->RunTest(
         );
 
         # Check if there is PrimarySecondary error log during ticket creation. See bug#14899.
-        my $RandomID = $Helper->GetRandomID();
+        my $RandomID = $HelperObject->GetRandomID();
 
         # Navigate to AgentTicketPhone and create test ticket.
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketPhone");

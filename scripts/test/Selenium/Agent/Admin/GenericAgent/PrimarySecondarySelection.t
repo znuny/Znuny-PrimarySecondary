@@ -19,16 +19,17 @@ my $Selenium = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
 $Selenium->RunTest(
     sub {
 
-        my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        my $HelperObject = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
         # Enable the UnsetPrimarySecondary config.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'PrimarySecondary::UnsetPrimarySecondary',
             Value => 1,
         );
 
         # Create test user and log in.
-        my $TestUserLogin = $Helper->TestUserCreate(
+        my $TestUserLogin = $HelperObject->TestUserCreate(
             Groups => [ 'admin', 'users' ],
         ) || die "Did not get test user";
 
@@ -38,7 +39,7 @@ $Selenium->RunTest(
             Password => $TestUserLogin,
         );
 
-        my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
+        my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
 
         # Navigate to AdminGenericAgent screen for new job adding.
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminGenericAgent;Subaction=Update");
@@ -71,7 +72,7 @@ $Selenium->RunTest(
         }
 
         # Disable the UnsetPrimarySecondary config.
-        $Helper->ConfigSettingChange(
+        $HelperObject->ConfigSettingChange(
             Key   => 'PrimarySecondary::UnsetPrimarySecondary',
             Value => 0,
         );

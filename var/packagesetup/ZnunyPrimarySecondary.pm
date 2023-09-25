@@ -69,8 +69,10 @@ sub new {
         Objects => ['Kernel::Config'],
     );
 
+    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
+
     # get dynamic fields list
-    $Self->{DynamicFieldsList} = $Kernel::OM->Get('Kernel::System::DynamicField')->DynamicFieldListGet(
+    $Self->{DynamicFieldsList} = $DynamicFieldObject->DynamicFieldListGet(
         Valid      => 0,
         ObjectType => ['Ticket'],
     );
@@ -183,7 +185,10 @@ sub _SetDynamicFields {
     my ( $Self, %Param ) = @_;
 
     # get config object
+    my $CacheObject  = $Kernel::OM->Get('Kernel::System::Cache');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
+    my $LogObject    = $Kernel::OM->Get('Kernel::System::Log');
 
     # get dynamic field names from SysConfig
     my $PrimarySecondaryDynamicField = $ConfigObject->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
@@ -253,7 +258,7 @@ sub _SetDynamicFields {
                 );
 
                 if ( !$Success ) {
-                    $Kernel::OM->Get('Kernel::System::Log')->Log(
+                    $LogObject->Log(
                         Priority => 'error',
                         Message  => "Could not set dynamic field '$NewFieldName' to valid!",
                     );
@@ -263,7 +268,7 @@ sub _SetDynamicFields {
 
                 # update InternalField value manually since API does not support
                 # internal_field update
-                my $Success = $Kernel::OM->Get('Kernel::System::DB')->Do(
+                my $Success = $DBObject->Do(
                     SQL => '
                         UPDATE dynamic_field
                         SET internal_field = 1
@@ -271,14 +276,14 @@ sub _SetDynamicFields {
                     Bind => [ \$DynamicFieldConfig->{ID} ],
                 );
                 if ( !$Success ) {
-                    $Kernel::OM->Get('Kernel::System::Log')->Log(
+                    $LogObject->Log(
                         Priority => 'error',
                         Message  => "Could not set dynamic field '$NewFieldName' as internal!",
                     );
                 }
 
                 # clean dynamic field cache
-                $Kernel::OM->Get('Kernel::System::Cache')->CleanUp(
+                $CacheObject->CleanUp(
                     Type => 'DynamicField',
                 );
             }
@@ -295,7 +300,7 @@ sub _SetDynamicFields {
             );
 
             if ( !$ID ) {
-                $Kernel::OM->Get('Kernel::System::Log')->Log(
+                $LogObject->Log(
                     Priority => 'error',
                     Message  => "Could not add dynamic field '$NewFieldName'!",
                 );
@@ -333,7 +338,10 @@ sub _RemoveDynamicFields {
     my ( $Self, %Param ) = @_;
 
     # get config object
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $ConfigObject            = $Kernel::OM->Get('Kernel::Config');
+    my $DynamicFieldObject      = $Kernel::OM->Get('Kernel::System::DynamicField');
+    my $DynamicFieldValueObject = $Kernel::OM->Get('Kernel::System::DynamicFieldValue');
+    my $LogObject               = $Kernel::OM->Get('Kernel::System::Log');
 
     # get dynamic field names from SysConfig
     my $PrimarySecondaryDynamicField = $ConfigObject->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
@@ -345,7 +353,7 @@ sub _RemoveDynamicFields {
         my $DynamicFieldID = $Self->{DynamicFieldLookup}->{$PrimarySecondaryDynamicField}->{ID};
 
         # delete all field values
-        my $ValuesDeleteSuccess = $Kernel::OM->Get('Kernel::System::DynamicFieldValue')->AllValuesDelete(
+        my $ValuesDeleteSuccess = $DynamicFieldValueObject->AllValuesDelete(
             FieldID => $DynamicFieldID,
             UserID  => 1,
         );
@@ -353,21 +361,21 @@ sub _RemoveDynamicFields {
         if ($ValuesDeleteSuccess) {
 
             # delete field
-            my $Success = $Kernel::OM->Get('Kernel::System::DynamicField')->DynamicFieldDelete(
+            my $Success = $DynamicFieldObject->DynamicFieldDelete(
                 ID      => $DynamicFieldID,
                 UserID  => 1,
                 Reorder => 1,
             );
 
             if ( !$Success ) {
-                $Kernel::OM->Get('Kernel::System::Log')->Log(
+                $LogObject->Log(
                     Priority => 'error',
                     Message  => "Could not delete dynamic field '$PrimarySecondaryDynamicField'!",
                 );
             }
         }
         else {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
+            $LogObject->Log(
                 Priority => 'error',
                 Message  => "Could not delete values for dynamic field '$PrimarySecondaryDynamicField'!",
             );
@@ -431,9 +439,10 @@ sub _RemoveDynamicFields {
 sub _SetDashboardConfig {
     my ( $Self, %Param ) = @_;
 
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
     # get dynamic field names from SysConfig
-    my $PrimarySecondaryDynamicField
-        = $Kernel::OM->Get('Kernel::Config')->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
+    my $PrimarySecondaryDynamicField = $ConfigObject->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
 
     # attributes common for both Primary and Secondary widgets
     my %CommonConfig = (
@@ -616,9 +625,12 @@ sub _MigratePrimarySecondarySysConfigSettings {
 sub _MigrateToPrimarySecondary {
     my ( $Self, %Param ) = @_;
 
+    my $CacheObject        = $Kernel::OM->Get('Kernel::System::Cache');
     my $ConfigObject       = $Kernel::OM->Get('Kernel::Config');
-    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
     my $DBObject           = $Kernel::OM->Get('Kernel::System::DB');
+    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
+    my $LogObject          = $Kernel::OM->Get('Kernel::System::Log');
+    my $SysConfigObject    = $Kernel::OM->Get('Kernel::System::SysConfig');
 
     # get dynamic field names from SysConfig
     my $MasterSlaveDynamicField = $ConfigObject->Get('MasterSlave::DynamicField') || 'MasterSlave';
@@ -656,14 +668,14 @@ sub _MigrateToPrimarySecondary {
         Bind => [ \$OldDynamicField->{ID} ],
     );
     if ( !$Success ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
+        $LogObject->Log(
             Priority => 'error',
             Message  => "Could not set dynamic field '$MasterSlaveDynamicField' as internal!",
         );
     }
 
     # clean dynamic field cache
-    $Kernel::OM->Get('Kernel::System::Cache')->CleanUp(
+    $CacheObject->CleanUp(
         Type => 'DynamicField',
     );
 
@@ -673,7 +685,7 @@ sub _MigrateToPrimarySecondary {
     my %ValuesToSet     = %{ $ExistingSetting->{DynamicField} || {} };
     $ValuesToSet{PrimarySecondary} = 1;
 
-    return if !$Kernel::OM->Get('Kernel::System::SysConfig')->SettingsSet(
+    return if !$SysConfigObject->SettingsSet(
         UserID   => 1,
         Comments => 'Znuny-PrimarySecondary - deploy dynamic fields.',
         Settings => [

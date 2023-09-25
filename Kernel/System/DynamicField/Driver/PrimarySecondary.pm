@@ -67,9 +67,11 @@ sub new {
         'IsCustomerInterfaceCapable'   => 0,
     };
 
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $MainObject   = $Kernel::OM->Get('Kernel::System::Main');
+
     # get the Dynamic Field Backend custom extensions
-    my $DynamicFieldDriverExtensions
-        = $Kernel::OM->Get('Kernel::Config')->Get('DynamicFields::Extension::Driver::PrimarySecondary');
+    my $DynamicFieldDriverExtensions = $ConfigObject->Get('DynamicFields::Extension::Driver::PrimarySecondary');
 
     EXTENSION:
     for my $ExtensionKey ( sort keys %{$DynamicFieldDriverExtensions} ) {
@@ -85,7 +87,7 @@ sub new {
 
             # check if module can be loaded
             if (
-                !$Kernel::OM->Get('Kernel::System::Main')->RequireBaseClass( $Extension->{Module} )
+                !$MainObject->RequireBaseClass( $Extension->{Module} )
                 )
             {
                 die "Can't load dynamic fields backend module"
@@ -131,6 +133,9 @@ sub ValueIsDifferent {
 sub ValueSet {
     my ( $Self, %Param ) = @_;
 
+    my $LogObject               = $Kernel::OM->Get('Kernel::System::Log');
+    my $DynamicFieldValueObject = $Kernel::OM->Get('Kernel::System::DynamicFieldValue');
+
     my $Success = $Self->_HandleLinks(
         FieldName  => $Param{DynamicFieldConfig}->{Name},
         FieldValue => $Param{Value},
@@ -139,7 +144,7 @@ sub ValueSet {
     );
 
     if ( !$Success ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
+        $LogObject->Log(
             Priority => 'error',
             Message  => "There was an error handling the links for primary/secondary, value could not be set",
         );
@@ -149,7 +154,7 @@ sub ValueSet {
 
     my $Value = $Param{Value} !~ /^(?:UnsetPrimary|UnsetSecondary)$/ ? $Param{Value} : '';
 
-    $Success = $Kernel::OM->Get('Kernel::System::DynamicFieldValue')->ValueSet(
+    $Success = $DynamicFieldValueObject->ValueSet(
         FieldID  => $Param{DynamicFieldConfig}->{ID},
         ObjectID => $Param{ObjectID},
         Value    => [
@@ -299,9 +304,9 @@ sub PossibleValuesGet {
         '' => '-',
     );
 
-    # get needed objects
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
     # find all current open primary secondary tickets and the legacy master slave tickets
     my @TicketIDs;
@@ -337,7 +342,6 @@ sub PossibleValuesGet {
     # set dynamic field possible values
     $PossibleValues{Primary} = $LayoutObject->{LanguageObject}->Translate('New Primary Ticket');
 
-    my $ConfigObject      = $Kernel::OM->Get('Kernel::Config');
     my $TicketHook        = $ConfigObject->Get('Ticket::Hook');
     my $TicketHookDivider = $ConfigObject->Get('Ticket::HookDivider');
 
@@ -378,10 +382,11 @@ sub PossibleValuesGet {
 sub _HandleLinks {
     my ( $Self, %Param ) = @_;
 
-    # check needed stuff
+    my $LogObject = $Kernel::OM->Get('Kernel::System::Log');
+
     for my $Needed (qw(FieldName FieldValue TicketID UserID)) {
         if ( !$Param{$Needed} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
+            $LogObject->Log(
                 Priority => 'error',
                 Message  => "Need $Needed!",
             );

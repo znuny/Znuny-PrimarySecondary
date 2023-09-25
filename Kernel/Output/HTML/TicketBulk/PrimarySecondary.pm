@@ -31,14 +31,15 @@ sub new {
     my $Self = {%Param};
     bless( $Self, $Type );
 
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $ConfigObject       = $Kernel::OM->Get('Kernel::Config');
+    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
 
     # get Primary/Secondary dynamic field
     $Self->{PrimarySecondaryDynamicField}    = $ConfigObject->Get('PrimarySecondary::DynamicField')    || '';
     $Self->{PrimarySecondaryAdvancedEnabled} = $ConfigObject->Get('PrimarySecondary::AdvancedEnabled') || 0;
 
     if ( $Self->{PrimarySecondaryDynamicField} ) {
-        $Self->{DynamicFieldConfig} = $Kernel::OM->Get('Kernel::System::DynamicField')->DynamicFieldGet(
+        $Self->{DynamicFieldConfig} = $DynamicFieldObject->DynamicFieldGet(
             Name => $Self->{PrimarySecondaryDynamicField},
         );
     }
@@ -65,14 +66,18 @@ sub Display {
         PrimarySecondaryDynamicField => $Self->{PrimarySecondaryDynamicField},
     );
 
+    my $DynamicFieldBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
+    my $LayoutObject              = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $ParamObject               = $Kernel::OM->Get('Kernel::System::Web::Request');
+
     # get field HTML
-    my $DynamicFieldHTML = $Kernel::OM->Get('Kernel::System::DynamicField::Backend')->EditFieldRender(
+    my $DynamicFieldHTML = $DynamicFieldBackendObject->EditFieldRender(
         DynamicFieldConfig   => $Self->{DynamicFieldConfig},
         PossibleValuesFilter => $PossibleValuesFilter,
         ServerError          => $ServerError || '',
         ErrorMessage         => $ErrorMessage || '',
-        LayoutObject         => $Kernel::OM->Get('Kernel::Output::HTML::Layout'),
-        ParamObject          => $Kernel::OM->Get('Kernel::System::Web::Request'),
+        LayoutObject         => $LayoutObject,
+        ParamObject          => $ParamObject,
         Mandatory            => 0,
     );
 
@@ -82,7 +87,6 @@ sub Display {
                     <div class="Field">
                         $DynamicFieldHTML->{Field}
                     </div>
-                    <div class="Clear"></div>
 EOF
 
     return $HTMLString;
@@ -100,7 +104,9 @@ sub Validate {
         PrimarySecondaryDynamicField => $Self->{PrimarySecondaryDynamicField},
     );
 
-    my $ValidationResult = $Kernel::OM->Get('Kernel::System::DynamicField::Backend')->EditFieldValueValidate(
+    my $DynamicFieldBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
+
+    my $ValidationResult = $DynamicFieldBackendObject->EditFieldValueValidate(
         DynamicFieldConfig   => $Self->{DynamicFieldConfig},
         PossibleValuesFilter => $PossibleValuesFilter,
         ParamObject          => $Kernel::OM->Get('Kernel::System::Web::Request'),

@@ -69,15 +69,18 @@ sub _Add {
     my ( $Self, %Param ) = @_;
 
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
 
     my %GetParam;
+
+    NEEDED:
     for my $Needed (qw(ObjectType FieldType FieldOrder)) {
-        $GetParam{$Needed} = $Kernel::OM->Get('Kernel::System::Web::Request')->GetParam( Param => $Needed );
-        if ( !$Needed ) {
-            return $LayoutObject->ErrorScreen(
-                Message => $LayoutObject->{LanguageObject}->Translate( 'Need %s', $Needed ),
-            );
-        }
+        $GetParam{$Needed} = $ParamObject->GetParam( Param => $Needed );
+        next NEEDED if defined $GetParam{$Needed};
+
+        return $LayoutObject->ErrorScreen(
+            Message => $LayoutObject->{LanguageObject}->Translate( 'Need %s', $Needed ),
+        );
     }
 
     # get the object type and field type display name
@@ -106,12 +109,13 @@ sub _AddAction {
     my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
+    NEEDED:
     for my $Needed (qw(Name Label FieldOrder)) {
         $GetParam{$Needed} = $ParamObject->GetParam( Param => $Needed );
-        if ( !$GetParam{$Needed} ) {
-            $Errors{ $Needed . 'ServerError' }        = 'ServerError';
-            $Errors{ $Needed . 'ServerErrorMessage' } = Translatable('This field is required.');
-        }
+        next NEEDED if defined $GetParam{$Needed};
+
+        $Errors{ $Needed . 'ServerError' }        = 'ServerError';
+        $Errors{ $Needed . 'ServerErrorMessage' } = Translatable('This field is required.');
     }
 
     my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
@@ -210,17 +214,20 @@ sub _AddAction {
 sub _Change {
     my ( $Self, %Param ) = @_;
 
-    my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
-    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $ParamObject        = $Kernel::OM->Get('Kernel::System::Web::Request');
+    my $LayoutObject       = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
 
     my %GetParam;
+
+    NEEDED:
     for my $Needed (qw(ObjectType FieldType)) {
         $GetParam{$Needed} = $ParamObject->GetParam( Param => $Needed );
-        if ( !$Needed ) {
-            return $LayoutObject->ErrorScreen(
-                Message => $LayoutObject->{LanguageObject}->Translate( 'Need %s', $Needed ),
-            );
-        }
+        next NEEDED if defined $GetParam{$Needed};
+
+        return $LayoutObject->ErrorScreen(
+            Message => $LayoutObject->{LanguageObject}->Translate( 'Need %s', $Needed ),
+        );
     }
 
     # get the object type and field type display name
@@ -239,7 +246,7 @@ sub _Change {
     }
 
     # get dynamic field data
-    my $DynamicFieldData = $Kernel::OM->Get('Kernel::System::DynamicField')->DynamicFieldGet(
+    my $DynamicFieldData = $DynamicFieldObject->DynamicFieldGet(
         ID => $FieldID,
     );
 
@@ -272,12 +279,13 @@ sub _ChangeAction {
     my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
+    NEEDED:
     for my $Needed (qw(Name Label FieldOrder)) {
         $GetParam{$Needed} = $ParamObject->GetParam( Param => $Needed );
-        if ( !$GetParam{$Needed} ) {
-            $Errors{ $Needed . 'ServerError' }        = 'ServerError';
-            $Errors{ $Needed . 'ServerErrorMessage' } = Translatable('This field is required.');
-        }
+        next NEEDED if defined $GetParam{$Needed};
+
+        $Errors{ $Needed . 'ServerError' }        = 'ServerError';
+        $Errors{ $Needed . 'ServerErrorMessage' } = Translatable('This field is required.');
     }
 
     my $FieldID = $ParamObject->GetParam( Param => 'ID' );
@@ -422,14 +430,16 @@ sub _ShowScreen {
         $Param{DisplayFieldName} = $Param{Name};
     }
 
-    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $LayoutObject       = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
+    my $ValidObject        = $Kernel::OM->Get('Kernel::System::Valid');
 
     # header
     my $Output = $LayoutObject->Header();
     $Output .= $LayoutObject->NavigationBar();
 
     # get all fields
-    my $DynamicFieldList = $Kernel::OM->Get('Kernel::System::DynamicField')->DynamicFieldListGet(
+    my $DynamicFieldList = $DynamicFieldObject->DynamicFieldListGet(
         Valid => 0,
     );
 
@@ -474,7 +484,7 @@ sub _ShowScreen {
         Class         => 'W75pc Validate_Number Modernize',
     );
 
-    my %ValidList = $Kernel::OM->Get('Kernel::System::Valid')->ValidList();
+    my %ValidList = $ValidObject->ValidList();
 
     # create the Validity select
     my $ValidityStrg = $LayoutObject->BuildSelection(

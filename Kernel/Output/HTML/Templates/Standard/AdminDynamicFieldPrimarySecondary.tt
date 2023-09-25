@@ -7,35 +7,8 @@
 # did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
-<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst">
-    <h1 class="InvisibleText">
-        [% Translate("Dynamic Fields") | html %] - [% Translate(Data.ObjectTypeName) | html %]:
-        [% USE Title = String(Data.BreadcrumbText) %]
-        [% Title | html %]
-    </h1>
-
-    [% BreadcrumbPath = [
-            {
-                Name => Translate('Dynamic Fields Management'),
-                Link => 'AdminDynamicField',
-            },
-        ]
-    %]
-
-    [% USE BreadcrumbName = String(Translate(Data.ObjectTypeName)) %]
-
-    [% SWITCH Data.Mode %]
-        [% CASE 'Add' %]
-            [% BreadcrumbPath.push({ Name => BreadcrumbName.append( ': ', Title ) }) %]
-        [% CASE 'Change' %]
-            [% BreadcrumbPath.push({ Name => BreadcrumbName.append( ': ', Title, ' - ', Data.Name ) }) %]
-    [% END %]
-
-    [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
-
-    <div class="Clear"></div>
-
-    <div class="SidebarColumn">
+<div class="MainBox ARIARoleMain LayoutFixedSidebar SidebarFirst ActionsSideBar">
+    <div class="SidebarColumn ActionsSideBarComp">
         <div class="WidgetSimple">
             <div class="Header">
                 <h2>[% Translate("Actions") | html %]</h2>
@@ -51,6 +24,31 @@
     </div>
 
     <div class="ContentColumn">
+        <h1 class="InvisibleText">
+            [% Translate("Dynamic Fields") | html %] - [% Translate(Data.ObjectTypeName) | html %]:
+            [% USE Title = String(Data.BreadcrumbText) %]
+            [% Title | html %]
+        </h1>
+
+        [% BreadcrumbPath = [
+                {
+                    Name => Translate('Dynamic Fields Management'),
+                    Link => 'AdminDynamicField',
+                },
+            ]
+        %]
+
+        [% USE BreadcrumbName = String(Translate(Data.ObjectTypeName)) %]
+
+        [% SWITCH Data.Mode %]
+            [% CASE 'Add' %]
+                [% BreadcrumbPath.push({ Name => BreadcrumbName.append( ': ', Title ) }) %]
+            [% CASE 'Change' %]
+                [% BreadcrumbPath.push({ Name => BreadcrumbName.append( ': ', Title, ' - ', Data.Name ) }) %]
+        [% END %]
+
+        [% INCLUDE "Breadcrumb.tt" Path = BreadcrumbPath %]
+
         <form action="[% Env("CGIHandle") %]" method="post" class="Validate PreventMultipleSubmits">
             <input type="hidden" name="Action" value="AdminDynamicFieldPrimarySecondary" />
             <input type="hidden" name="Subaction" value="[% Data.Mode | html %]Action" />
@@ -74,7 +72,6 @@
                                     <p class="FieldExplanation">[% Translate("Must be unique and only accept alphabetic and numeric characters.") | html %]</p>
                                     <p class="Warning Hidden">[% Translate("Changing this value will require manual changes in the system.") | html %]</p>
                                 </div>
-                                <div class="Clear"></div>
 
                                 <label class="Mandatory" for="Label"><span class="Marker">*</span> [% Translate("Label") | html %]:</label>
                                 <div class="Field">
@@ -83,7 +80,6 @@
                                     <div id="LabelServerError" class="TooltipErrorMessage"><p>[% Translate(Data.LabelServerErrorMessage) | html %]</p></div>
                                     <p class="FieldExplanation">[% Translate("This is the name to be shown on the screens where the field is active.") | html %]</p>
                                 </div>
-                                <div class="Clear"></div>
 
                                 <label class="Mandatory" for="FieldOrder"><span class="Marker">*</span> [% Translate("Field order") | html %]:</label>
                                 <div class="Field">
@@ -92,8 +88,7 @@
                                     <div id="FieldOrderServerError" class="TooltipErrorMessage"><p>[% Translate(Data.FieldOrderServerErrorMessage) | html %]</p></div>
                                     <p class="FieldExplanation">[% Translate("This is the order in which this field will be shown on the screens where is active.") | html %]</p>
                                 </div>
-                                <div class="Clear"></div>
-                            </fieldset>
+                                                            </fieldset>
                         </div>
                         <div class="Size1of2">
                             <fieldset class="TableLike">
@@ -101,21 +96,18 @@
                                 <div class="Field">
                                     [% Data.ValidityStrg %]
                                 </div>
-                                <div class="Clear"></div>
 
                                 <div class="SpacingTop"></div>
                                 <label for="FieldTypeName">[% Translate("Field type") | html %]:</label>
                                 <div class="Field">
                                     <input id="FieldTypeName" readonly class="W50pc" type="text" maxlength="200" value="[% Translate(Data.FieldTypeName) | html %]" name="FieldTypeName"/>
-                                    <div class="Clear"></div>
-                                </div>
+                                                                    </div>
 
                                 <div class="SpacingTop"></div>
                                 <label for="ObjectTypeName">[% Translate("Object type") | html %]:</label>
                                 <div class="Field">
                                     <input id="ObjectTypeName" readonly class="W50pc" type="text" maxlength="200" value="[% Translate(Data.ObjectTypeName) | html %]" name="ObjectTypeName"/>
-                                    <div class="Clear"></div>
-                                </div>
+                                                                    </div>
 
 [% RenderBlockStart("InternalField") %]
                                 <div class="SpacingTop"></div>
@@ -125,8 +117,7 @@
                                     <p class="FieldExplanation">
                                         [% Translate("This field is protected and can't be deleted.") | html %]
                                     </p>
-                                    <div class="Clear"></div>
-                                </div>
+                                                                    </div>
 [% RenderBlockEnd("InternalField") %]
                             </fieldset>
                         </div>
@@ -134,12 +125,13 @@
                 </div>
             </div>
             <fieldset class="TableLike">
-                <div class="Field SpacingTop">
-                    <button type="submit" class="Primary CallForAction" value="[% Translate("Submit") | html %]"><span>[% Translate("Submit") | html %]</span></button>
-                    [% Translate("or") | html %]
-                    <a href="[% Env("Baselink") %]Action=AdminDynamicField">[% Translate("Cancel") | html %]</a>
+                <div class="field-wrapper form-button-actions">
+                    <div class="Field buttons-field">
+                        <a href="[% Env("Baselink") %]Action=[% Env("Action") %]" class="btn-cancel-ghost btn-main btn-width-md"><span>[% Translate("Cancel") | html %]</span></a>
+
+                        <button class="CallForAction Primary btn-primary btn-main btn-width-md" id="Submit" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
+                    </div>
                 </div>
-                <div class="Clear"></div>
             </fieldset>
         </form>
     </div>

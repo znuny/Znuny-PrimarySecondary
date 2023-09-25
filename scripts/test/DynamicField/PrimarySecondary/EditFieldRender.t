@@ -24,8 +24,18 @@ $Kernel::OM->ObjectParamAdd(
         UserID => 1,
     },
 );
+
+local $Kernel::OM = Kernel::System::ObjectManager->new(
+    'Kernel::Output::HTML::Layout' => {
+        Lang => 'en',
+    },
+);
 my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+$LayoutObject->{UserID} = 1;
+use Data::Dumper;
+print STDERR 'Debug Dump -  - $LayoutObject->{UserLanguage} = ' . Dumper( \$LayoutObject->{UserLanguage} ) . "\n";
 
 # get helper object
 $Kernel::OM->ObjectParamAdd(
@@ -94,10 +104,8 @@ my @Tests = (
   <option value="Primary">New Primary Ticket</option>
 </select>
 ',
-            Label => '<label id="LabelDynamicField_PrimarySecondary" for="DynamicField_PrimarySecondary">
-Primary Ticket:
-</label>
-'
+            Label =>
+                '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
         },
     },
     {
@@ -120,10 +128,8 @@ Primary Ticket:
   <option value="UnsetSecondary">Unset Secondary Tickets</option>
 </select>
 ',
-            Label => '<label id="LabelDynamicField_PrimarySecondary" for="DynamicField_PrimarySecondary">
-Primary Ticket:
-</label>
-'
+            Label =>
+                '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
         },
     },
     {
@@ -141,10 +147,8 @@ Primary Ticket:
   <option value="">-</option>
   <option value="Primary">New Primary Ticket</option>
 EOF
-            Label => '<label id="LabelDynamicField_PrimarySecondary" for="DynamicField_PrimarySecondary">
-Primary Ticket:
-</label>
-'
+            Label =>
+                '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
         },
     },
     {
@@ -161,10 +165,8 @@ Primary Ticket:
   <option value="" selected="selected">-</option>
   <option value="Primary">New Primary Ticket</option>
 EOF
-            Label => '<label id="LabelDynamicField_PrimarySecondary" for="DynamicField_PrimarySecondary">
-Primary Ticket:
-</label>
-'
+            Label =>
+                '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
         },
     },
     {
@@ -183,10 +185,8 @@ Primary Ticket:
   <option value="">-</option>
   <option value="Primary" selected="selected">New Primary Ticket</option>
 EOF
-            Label => '<label id="LabelDynamicField_PrimarySecondary" for="DynamicField_PrimarySecondary">
-Primary Ticket:
-</label>
-'
+            Label =>
+                '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
         },
     },
     {
@@ -213,11 +213,7 @@ Primary Ticket:
 </div>
 ',
             Label =>
-                '<label id="LabelDynamicField_PrimarySecondary" for="DynamicField_PrimarySecondary" class="Mandatory">
-    <span class="Marker">*</span>
-Primary Ticket:
-</label>
-'
+                '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\' class=\'Mandatory\'><span class=\'Marker\'>*</span>Primary Ticket</label></div>'
         },
     },
     {
@@ -244,10 +240,8 @@ Primary Ticket:
     </p>
 </div>
 ',
-            Label => '<label id="LabelDynamicField_PrimarySecondary" for="DynamicField_PrimarySecondary">
-Primary Ticket:
-</label>
-'
+            Label =>
+                '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
         },
     },
 );
