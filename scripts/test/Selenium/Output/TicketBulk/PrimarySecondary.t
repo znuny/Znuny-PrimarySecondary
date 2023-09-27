@@ -100,7 +100,7 @@ $Selenium->RunTest(
         $Selenium->execute_script("\$('#Attribute').val('Title').trigger('redraw.InputField').trigger('change');");
 
         $Selenium->find_element( "Title", 'name' )->send_keys($TicketTitle);
-        $Selenium->find_element("//button[\@id='SearchFormSubmit'][\@value='Run search']")->VerifiedClick();
+        $Selenium->find_element("//button[\@id='SearchFormSubmit'][\@value='Search']")->VerifiedClick();
 
         $Selenium->WaitFor(
             JavaScript => "return typeof(\$) === 'function' && \$('.Checkbox[value=$TicketIDs[0]]').length;"
@@ -123,6 +123,10 @@ $Selenium->RunTest(
         $Selenium->WaitFor(
             JavaScript =>
                 'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete;',
+        );
+
+        $Selenium->execute_script(
+            "\$('#submitRichText')[0].scrollIntoView(true);",
         );
 
         $Selenium->WaitFor(

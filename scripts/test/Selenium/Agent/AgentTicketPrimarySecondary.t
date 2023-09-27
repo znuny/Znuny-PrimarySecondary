@@ -164,7 +164,11 @@ $Selenium->RunTest(
         );
         $Selenium->find_element( "#Subject",  'css' )->send_keys('Selenium Primary Ticket');
         $Selenium->find_element( "#RichText", 'css' )->send_keys('Selenium Primary Ticket');
-        $Selenium->find_element("//button[\@class='CallForAction Primary'][contains(.,'Submit')]")->click();
+
+        $Selenium->execute_script(
+            "\$('#submitRichText')[0].scrollIntoView(true);",
+        );
+        $Selenium->find_element( "#submitRichText", 'css' )->click();
 
         # Switch window back to agent ticket zoom view of the first created test ticket.
         $Selenium->WaitFor( WindowCount => 1 );
@@ -214,7 +218,11 @@ $Selenium->RunTest(
         );
         $Selenium->find_element( "#Subject",  'css' )->send_keys('Selenium Secondary Ticket');
         $Selenium->find_element( "#RichText", 'css' )->send_keys('Selenium Secondary Ticket');
-        $Selenium->find_element("//button[\@class='CallForAction Primary'][contains(.,'Submit')]")->click();
+
+        $Selenium->execute_script(
+            "\$('#submitRichText')[0].scrollIntoView(true);",
+        );
+        $Selenium->find_element( "#submitRichText", 'css' )->click();
 
         $Selenium->switch_to_window( $Handles->[0] );
         $Selenium->WaitFor( WindowCount => 1 );
@@ -359,7 +367,10 @@ $Selenium->RunTest(
         $Selenium->execute_script(
             "\$('#DynamicField_PrimarySecondary').val('UnsetPrimary').trigger('redraw.InputField').trigger('change');"
         );
-        $Selenium->find_element("//button[\@class='CallForAction Primary'][contains(.,'Submit')]")->VerifiedClick();
+        $Selenium->execute_script(
+            "\$('#submitRichText')[0].scrollIntoView(true);",
+        );
+        $Selenium->find_element( "#submitRichText", 'css' )->click();
 
         # Make sure the cache is correct.
         my $CacheObject = $Kernel::OM->Get('Kernel::System::Cache');
