@@ -16,49 +16,49 @@ sub Data {
     my $Self = shift;
 
     # TT Template: Kernel/Output/HTML/Templates/Standard/AgentTicketPrimarySecondary.tt
-    $Self->{Translation}->{'Manage Primary/Secondary status for %s%s%s'} = '';
+    $Self->{Translation}->{'Manage Primary/Secondary status for %s%s%s'} = 'Zarządzaj statusem Nadrzędny/Podrzędny zgłoszenia %s%s%s';
 
     # Perl Module: Kernel/Modules/AgentTicketPrimarySecondary.pm
-    $Self->{Translation}->{'New Primary Ticket'} = '';
-    $Self->{Translation}->{'Unset Primary Ticket'} = '';
-    $Self->{Translation}->{'Unset Secondary Ticket'} = '';
-    $Self->{Translation}->{'Secondary of %s%s%s: %s'} = '';
+    $Self->{Translation}->{'New Primary Ticket'} = 'Nowe Zgłoszenie Nadrzędne';
+    $Self->{Translation}->{'Unset Primary Ticket'} = 'Usuń Nadrzędność Zgłoszenia';
+    $Self->{Translation}->{'Unset Secondary Ticket'} = 'Usuń Podrzędność Zgłoszenia';
+    $Self->{Translation}->{'Secondary of %s%s%s: %s'} = 'Podrzędny do %s%s%s: %s';
 
     # Perl Module: Kernel/Output/HTML/TicketBulk/PrimarySecondary.pm
-    $Self->{Translation}->{'Unset Primary Tickets'} = '';
-    $Self->{Translation}->{'Unset Secondary Tickets'} = '';
+    $Self->{Translation}->{'Unset Primary Tickets'} = 'Usuń Nadrzędność Zgłoszeń';
+    $Self->{Translation}->{'Unset Secondary Tickets'} = 'Usuń Podrzędność Zgłoszeń';
 
     # Perl Module: Kernel/System/DynamicField/Driver/PrimarySecondary.pm
-    $Self->{Translation}->{'Primary'} = '';
-    $Self->{Translation}->{'Secondary of %s%s%s'} = '';
-    $Self->{Translation}->{'Primary Ticket'} = '';
+    $Self->{Translation}->{'Primary'} = 'Nadrzędny';
+    $Self->{Translation}->{'Secondary of %s%s%s'} = 'Podrzędny do %s%s%s';
+    $Self->{Translation}->{'Primary Ticket'} = 'Zgłoszenie Nadrzędne';
 
     # SysConfig
-    $Self->{Translation}->{'All primary tickets'} = '';
-    $Self->{Translation}->{'All secondary tickets'} = '';
+    $Self->{Translation}->{'All primary tickets'} = 'Wszystkie zgłoszenia nadrzędne';
+    $Self->{Translation}->{'All secondary tickets'} = 'Wszystkie zgłoszenia podrzędne';
     $Self->{Translation}->{'Allows adding notes in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface.'} =
-        '';
-    $Self->{Translation}->{'Change the PrimarySecondary state of the ticket.'} = '';
-    $Self->{Translation}->{'Defines dynamic field name for primary ticket feature.'} = '';
+        'Pozwala na dodawanie notatek w oknie Nadrzędny/Podrzędny w widoku szczegółów zgłoszenia interfejsu agenta.';
+    $Self->{Translation}->{'Change the PrimarySecondary state of the ticket.'} = 'Zmień status Nadrzędny/Podrzędny zgłoszenia.';
+    $Self->{Translation}->{'Defines dynamic field name for primary ticket feature.'} = 'Określa nazwę pola dynamicznego do funkcjonalności zgłoszeń nadrzędnych.';
     $Self->{Translation}->{'Defines if a ticket lock is required in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).'} =
-        '';
+        'Określa czy jest wymagana blokada zgłoszenia w oknie Nadrzędny/Podrzędny w szczegółach zgłoszenia interfejsu agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje zablokowane a bieżący agent staje się jego właścicielem).';
     $Self->{Translation}->{'Defines if the PrimarySecondary note is visible for the customer by default.'} =
-        '';
+        'Określa czy notatka Nadrzędny/Podrzędny jest domyślnie widoczna dla klienta.';
     $Self->{Translation}->{'Defines the default next state of a ticket after adding a note, in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface.'} =
-        '';
+        'Określa domyślny, następny stan zgłoszenia po dodaniu notatki w oknie Nadrzędny/Podrzędny z poziomu szczegółów zgłoszenia w interfejsie agenta.';
     $Self->{Translation}->{'Defines the default ticket priority in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface.'} =
-        '';
+        'Określa domyślny, następny priorytet zgłoszenia po dodaniu notatki w oknie Nadrzędny/Podrzędny z poziomu szczegółów zgłoszenia w interfejsie agenta.';
     $Self->{Translation}->{'Defines the history comment for the ticket PrimarySecondary screen action, which gets used for ticket history in the agent interface.'} =
-        '';
+        'Określa komentarz w historii zgłoszenia po wykonaniu akcji w oknie Nadrzędny/Podrzędny, który zostanie użyty w interfejsie agenta.';
     $Self->{Translation}->{'Defines the history type for the ticket PrimarySecondary screen action, which gets used for ticket history in the agent interface.'} =
-        '';
+        'Określa typ historii zgłoszenia po wykonaniu akcji w oknie Nadrzędny/Podrzędny, który zostanie użyty w historii zgłoszenia w interfejsie agenta.';
     $Self->{Translation}->{'Defines the next state of a ticket after adding a note, in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface.'} =
-        '';
-    $Self->{Translation}->{'Enables the advanced PrimarySecondary part of the feature.'} = '';
+        'Określa następny stan zgłoszenia po dodaniu notatki w oknie Nadrzędny/Podrzędny z poziomu szczegółów zgłoszenia w interfejsie agenta.';
+    $Self->{Translation}->{'Enables the advanced PrimarySecondary part of the feature.'} = 'Włącza dodatkowe zaawansowane funkcje Nadrzędny/Podrzędny.';
     $Self->{Translation}->{'Enables the feature that secondary tickets follow the primary ticket to a new primary in the advanced PrimarySecondary mode.'} =
-        '';
+        'Włącza funkcjonalność dodatkową, dzięki której zgłoszenia podrzędne podążają za zgłoszeniem nadrzędnym do nowego zgłoszenia nadrzędnego.';
     $Self->{Translation}->{'Enables the feature to change the PrimarySecondary state of a ticket in the advanced PrimarySecondary mode.'} =
-        '';
+        'Włącza funkcjonalność dodatkową dzięki której można zmienić stan zgłoszenia Nadrzędny/Podrzędny.';
     $Self->{Translation}->{'Enables the feature to forward articles from type \'forward\' of a primary ticket to the customers of the secondary tickets. By default (disabled) it will not forward articles from type \'forward\' to the secondary tickets.'} =
         '';
     $Self->{Translation}->{'Enables the feature to keep parent-child link after change of the PrimarySecondary state in the advanced PrimarySecondary mode.'} =

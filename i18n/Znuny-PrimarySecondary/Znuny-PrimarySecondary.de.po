@@ -12,51 +12,51 @@ msgstr ""
 
 #. TT Template: Kernel/Output/HTML/Templates/Standard/AgentTicketPrimarySecondary.tt
 msgid "Manage Primary/Secondary status for %s%s%s"
-msgstr ""
+msgstr "Primary/Secondary-Status verwalten für %s%s%s"
 
 #. Perl Module: Kernel/Modules/AgentTicketPrimarySecondary.pm
 msgid "New Primary Ticket"
-msgstr ""
+msgstr "Neues Primary-Ticket"
 
 #. Perl Module: Kernel/Modules/AgentTicketPrimarySecondary.pm
 msgid "Unset Primary Ticket"
-msgstr ""
+msgstr "Aufheben des Primary-Ticket"
 
 #. Perl Module: Kernel/Modules/AgentTicketPrimarySecondary.pm
 msgid "Unset Secondary Ticket"
-msgstr ""
+msgstr "Aufheben des Secondary-Ticket"
 
 #. Perl Module: Kernel/Modules/AgentTicketPrimarySecondary.pm
 msgid "Secondary of %s%s%s: %s"
-msgstr ""
+msgstr "Secondary von %s%s%s: %s"
 
 #. Perl Module: Kernel/Output/HTML/TicketBulk/PrimarySecondary.pm
 msgid "Unset Primary Tickets"
-msgstr ""
+msgstr "Aufheben der Primary-Tickets"
 
 #. Perl Module: Kernel/Output/HTML/TicketBulk/PrimarySecondary.pm
 msgid "Unset Secondary Tickets"
-msgstr ""
+msgstr "Aufheben der Secondary-Tickets"
 
 #. Perl Module: Kernel/System/DynamicField/Driver/PrimarySecondary.pm
 msgid "Primary"
-msgstr ""
+msgstr "Primary"
 
 #. Perl Module: Kernel/System/DynamicField/Driver/PrimarySecondary.pm
 msgid "Secondary of %s%s%s"
-msgstr ""
+msgstr "Secondary von %s%s%s"
 
 #. Perl Module: Kernel/System/DynamicField/Driver/PrimarySecondary.pm
 msgid "Primary Ticket"
-msgstr ""
+msgstr "Primary Ticket"
 
 #. SysConfig
 msgid "All primary tickets"
-msgstr ""
+msgstr "Alle Primary Tickets"
 
 #. SysConfig
 msgid "All secondary tickets"
-msgstr ""
+msgstr "Alle Secondary-Tickets"
 
 #. SysConfig
 msgid "Allows adding notes in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
@@ -68,7 +68,7 @@ msgstr "Den PrimarySecondary-Status des Tickets ändern."
 
 #. SysConfig
 msgid "Defines dynamic field name for primary ticket feature."
-msgstr ""
+msgstr "Dynamisches Feld für das Primary-Ticket-Feature definieren."
 
 #. SysConfig
 msgid "Defines if a ticket lock is required in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface (if the ticket isn't locked yet, the ticket gets locked and the current agent will be set automatically as its owner)."
@@ -104,7 +104,7 @@ msgstr "Das erweiterte Verhalten des PrimarySecondary-Features aktivieren."
 
 #. SysConfig
 msgid "Enables the feature that secondary tickets follow the primary ticket to a new primary in the advanced PrimarySecondary mode."
-msgstr ""
+msgstr "Aktiviert die Funktionalität, dass Secondary-Tickets dem Primary-Ticket im erweiterten PrimarySecondary-Verhalten zum neuen Primary folgen."
 
 #. SysConfig
 msgid "Enables the feature to change the PrimarySecondary state of a ticket in the advanced PrimarySecondary mode."
@@ -112,7 +112,7 @@ msgstr "Aktiviert die Funktionalität zum Ändern des PrimarySecondary-Status ei
 
 #. SysConfig
 msgid "Enables the feature to forward articles from type 'forward' of a primary ticket to the customers of the secondary tickets. By default (disabled) it will not forward articles from type 'forward' to the secondary tickets."
-msgstr ""
+msgstr "Aktiviert die Funktion zum Weiterleiten von Artikeln des Typs 'Weiterleiten' zu den Kunden des Secondary-Tickets. Standardmäßig (deaktiviert) werden keine Artikel des Typs 'Weiterleiten' an die Secondary-Tickets weitergeleitet."
 
 #. SysConfig
 msgid "Enables the feature to keep parent-child link after change of the PrimarySecondary state in the advanced PrimarySecondary mode."
@@ -132,19 +132,19 @@ msgstr "Ermöglicht das Ändern des TIcket-Status beim Hinzufügen einer Notiz i
 
 #. SysConfig
 msgid "Parameters for the dashboard backend of the primary tickets overview of the agent interface. \"Limit\" is the number of entries shown by default. \"Group\" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin is enabled by default or if the user needs to enable it manually. \"CacheTTLLocal\" is the cache time in minutes for the plugin."
-msgstr ""
+msgstr "Einstellung der Übersichtsseitenparameter für Primary Tickets in der Agentenoberfläche. \"Limit\" gibt die Anzahl der standardmäßig dargestellten Einträge an. \"Group\" wird verwendet, um den Zugriff auf das Plugin zu begrenzen (bspw. Group: admin;group1;group2;). \"Default\" bestimmt, ob das Plugin standardmäßig aktiviert ist oder ob der Benutzer es selbst aktivieren muss. \"CacheTTLLocal\" ist die Caching-Zeit des Plugins, angegeben in Minuten."
 
 #. SysConfig
 msgid "Parameters for the dashboard backend of the secondary tickets overview of the agent interface. \"Limit\" is the number of entries shown by default. \"Group\" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin is enabled by default or if the user needs to enable it manually. \"CacheTTLLocal\" is the cache time in minutes for the plugin."
-msgstr ""
+msgstr "Einstellung der Übersichtsseitenparameter für Secondary Tickets in der Agentenoberfläche. \"Limit\" gibt die Anzahl der standardmäßig dargestellten Einträge an. \"Group\" wird verwendet, um den Zugriff auf das Plugin zu begrenzen (bspw. Group: admin;group1;group2;). \"Default\" bestimmt, ob das Plugin standardmäßig aktiviert ist oder ob der Benutzer es selbst aktivieren muss. \"CacheTTLLocal\" ist die Caching-Zeit des Plugins, angegeben in Minuten."
 
 #. SysConfig
 msgid "Primary / Secondary"
-msgstr ""
+msgstr "Primary / Secondary"
 
 #. SysConfig
 msgid "Primary Tickets"
-msgstr ""
+msgstr "Primary-Tickets"
 
 #. SysConfig
 msgid "PrimarySecondary"
@@ -164,11 +164,11 @@ msgstr "Benötigte Berechtigungen für die Anzeige des PrimarySecondary-Dialogs 
 
 #. SysConfig
 msgid "Secondary Tickets"
-msgstr ""
+msgstr "Secondary-Tickets"
 
 #. SysConfig
 msgid "Sets if Primary / Secondary field must be selected by the agent."
-msgstr ""
+msgstr "Legt fest, ob Primary / Secondary Feld durch einen Agenten ausgewählt sein muss."
 
 #. SysConfig
 msgid "Sets the default body text for notes added in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
@@ -216,11 +216,11 @@ msgstr "Zeigt das Titel-Feld in der PrimarySecondary-Oberfläche eines aufgerufe
 
 #. SysConfig
 msgid "Specifies the different article communication channels where the real name from Primary ticket will be replaced with the one in the Secondary ticket."
-msgstr ""
+msgstr "Gibt die verschiedenen Artikel-Kommunikationskanäle an, bei denen der echte Name vom Primary-Ticket durch den im Secondary-Ticket ersetzt wird."
 
 #. SysConfig
 msgid "This module activates Primary/Secondary field in new email and phone ticket screens."
-msgstr ""
+msgstr "Dieses Modul aktiviert das Primary/Secondary-Feld in der Anzeige für ein neues Email- oder Telefon-Ticket."
 
 #. SysConfig
 msgid "This setting is deprecated and will be removed in further versions of ZnunyPrimarySecondary."
