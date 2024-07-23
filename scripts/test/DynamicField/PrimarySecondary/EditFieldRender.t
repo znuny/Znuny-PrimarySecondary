@@ -103,6 +103,17 @@ my @Tests = (
                 '<select class="DynamicFieldText Modernize" id="DynamicField_PrimarySecondary" name="DynamicField_PrimarySecondary" size="1">
   <option value="Primary">New Primary Ticket</option>
 </select>
+<div id="DynamicField_PrimarySecondaryError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
+
+<div id="DynamicField_PrimarySecondaryServerError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
 ',
             Label =>
                 '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
@@ -127,6 +138,17 @@ my @Tests = (
   <option value="UnsetPrimary">Unset Primary Tickets</option>
   <option value="UnsetSecondary">Unset Secondary Tickets</option>
 </select>
+<div id="DynamicField_PrimarySecondaryError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
+
+<div id="DynamicField_PrimarySecondaryServerError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
 ',
             Label =>
                 '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
@@ -142,10 +164,22 @@ my @Tests = (
             UseDefaultValue    => 0,
         },
         ExpectedResults => {
-            Field => <<"EOF" . '</select>',
+            Field => <<"EOF",
 <select class="DynamicFieldText Modernize MyClass" id="DynamicField_PrimarySecondary" name="DynamicField_PrimarySecondary" size="1">
   <option value="">-</option>
   <option value="Primary">New Primary Ticket</option>
+</select>
+<div id="DynamicField_PrimarySecondaryError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
+
+<div id="DynamicField_PrimarySecondaryServerError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
 EOF
             Label =>
                 '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
@@ -160,10 +194,22 @@ EOF
             Class              => 'MyClass',
         },
         ExpectedResults => {
-            Field => <<"EOF" . '</select>',
+            Field => <<"EOF",
 <select class="DynamicFieldText Modernize MyClass" id="DynamicField_PrimarySecondary" name="DynamicField_PrimarySecondary" size="1">
   <option value="" selected="selected">-</option>
   <option value="Primary">New Primary Ticket</option>
+</select>
+<div id="DynamicField_PrimarySecondaryError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
+
+<div id="DynamicField_PrimarySecondaryServerError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
 EOF
             Label =>
                 '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
@@ -180,10 +226,22 @@ EOF
             UseDefaultValue    => 0,
         },
         ExpectedResults => {
-            Field => <<"EOF" . '</select>',
+            Field => <<"EOF",
 <select class="DynamicFieldText Modernize MyClass" id="DynamicField_PrimarySecondary" name="DynamicField_PrimarySecondary" size="1">
   <option value="">-</option>
   <option value="Primary" selected="selected">New Primary Ticket</option>
+</select>
+<div id="DynamicField_PrimarySecondaryError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
+
+<div id="DynamicField_PrimarySecondaryServerError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
 EOF
             Label =>
                 '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\'>Primary Ticket</label></div>'
@@ -211,6 +269,12 @@ EOF
         This field is required.
     </p>
 </div>
+
+<div id="DynamicField_PrimarySecondaryServerError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
 ',
             Label =>
                 '<div class=\'label-wrapper\'><label id=\'LabelDynamicField_PrimarySecondary\' for=\'DynamicField_PrimarySecondary\' class=\'Mandatory\'><span class=\'Marker\'>*</span>Primary Ticket</label></div>'
@@ -234,6 +298,12 @@ EOF
   <option value="">-</option>
   <option value="Primary" selected="selected">New Primary Ticket</option>
 </select>
+<div id="DynamicField_PrimarySecondaryError" class="TooltipErrorMessage">
+    <p>
+        This field is required.
+    </p>
+</div>
+
 <div id="DynamicField_PrimarySecondaryServerError" class="TooltipErrorMessage">
     <p>
         This is an error.

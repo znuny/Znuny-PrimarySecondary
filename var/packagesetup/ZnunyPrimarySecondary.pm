@@ -439,61 +439,43 @@ sub _RemoveDynamicFields {
 sub _SetDashboardConfig {
     my ( $Self, %Param ) = @_;
 
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
-
-    # get dynamic field names from SysConfig
-    my $PrimarySecondaryDynamicField = $ConfigObject->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
-
-    # attributes common for both Primary and Secondary widgets
-    my %CommonConfig = (
-        Module        => 'Kernel::Output::HTML::DashboardTicketGeneric',
-        Filter        => 'All',
-        Time          => 'Age',
-        Limit         => 10,
-        Permission    => 'rw',
-        Block         => 'ContentLarge',
-        Group         => '',
-        Default       => 1,
-        CacheTTLLocal => 0.5,
-    );
-
-    # attributes for Primary widget
-    my %PrimaryConfig = (
-        Title       => 'Primary Tickets',
-        Description => 'All primary tickets',
-        Attributes  => 'DynamicField_' . $PrimarySecondaryDynamicField . '_Equals=Primary;',
-    );
-
-    # attributes for Secondary widget
-    my %SecondaryConfig = (
-        Title       => 'Secondary Tickets',
-        Description => 'All secondary tickets',
-        Attributes  => 'DynamicField_' . $PrimarySecondaryDynamicField . '_Like=Secondary*;',
-    );
-
-    # get SysConfig object
+    my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
     my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
 
-    # write configurations
+    my $DashboardConfig = $ConfigObject->Get('DashboardBackend') // {};
+    return 1 if !IsHashRefWithData($DashboardConfig);
+
+    #
+    # Replace dynamic field name (which is configurable) in attributes of dashboard settings.
+    #
+
+    # get dynamic field name from SysConfig
+    my $PrimarySecondaryDynamicField
+        = $Kernel::OM->Get('Kernel::Config')->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
+
+    my $PrimaryConfig   = $DashboardConfig->{'0900-TicketPrimary'}   // {};
+    my $SecondaryConfig = $DashboardConfig->{'0910-TicketSecondary'} // {};
+
+    CONFIG:
+    for my $Config ( $PrimaryConfig, $SecondaryConfig ) {
+        next CONFIG if !IsStringWithData( $PrimaryConfig->{Attributes} );
+
+        $Config->{Attributes} =~ s{DynamicField_PrimarySecondary}{DynamicField_$PrimarySecondaryDynamicField}g;
+    }
+
     return if !$SysConfigObject->SettingsSet(
         UserID   => 1,
         Comments => 'ZnunyPrimarySecondary - deploy dynamic fields for dashboard.',
         Settings => [
             {
                 Name           => 'DashboardBackend###0900-TicketPrimary',
-                EffectiveValue => {
-                    %CommonConfig,
-                    %PrimaryConfig,
-                },
-                IsValid => 1,
+                EffectiveValue => $PrimaryConfig,
+                IsValid        => 1,
             },
             {
                 Name           => 'DashboardBackend###0910-TicketSecondary',
-                EffectiveValue => {
-                    %CommonConfig,
-                    %SecondaryConfig,
-                },
-                IsValid => 1,
+                EffectiveValue => $SecondaryConfig,
+                IsValid        => 1,
             },
         ],
     );
