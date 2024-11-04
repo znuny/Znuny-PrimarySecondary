@@ -74,6 +74,7 @@ sub Data {
     $Self->{Translation}->{'Parameters for the dashboard backend of the secondary tickets overview of the agent interface. "Limit" is the number of entries shown by default. "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.'} =
         '';
     $Self->{Translation}->{'Primary / Secondary'} = '';
+    $Self->{Translation}->{'Primary Secondary'} = '';
     $Self->{Translation}->{'Primary Tickets'} = '';
     $Self->{Translation}->{'PrimarySecondary'} = '';
     $Self->{Translation}->{'PrimarySecondary module for Ticket Bulk feature.'} = '';
@@ -114,8 +115,7 @@ sub Data {
     $Self->{Translation}->{'Ticket PrimarySecondary.'} = '';
 
 
-    $Self->{JavaScriptStrings} //= [];
-    push @{$Self->{JavaScriptStrings}}, (
+    push @{ $Self->{JavaScriptStrings} //= [] }, (
     );
 
 }

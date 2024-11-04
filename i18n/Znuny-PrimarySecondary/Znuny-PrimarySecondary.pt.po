@@ -4,8 +4,7 @@ msgstr ""
 "POT-Creation-Date: 2023-03-13 10:45+0000\n"
 "PO-Revision-Date: 2024-11-01 13:22+0000\n"
 "Last-Translator: Ivo Oliveira <ivo2000liveira@gmail.com>\n"
-"Language-Team: Portuguese <https://translations.znuny.org/projects/znuny/"
-"znuny-primarysecondary/pt/>\n"
+"Language-Team: Portuguese <https://translations.znuny.org/projects/znuny/znuny-primarysecondary/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +31,7 @@ msgstr "Ticket Secundário Não Definido"
 #. Perl Module: Kernel/Modules/AgentTicketPrimarySecondary.pm
 #, fuzzy
 msgid "Secondary of %s%s%s: %s"
-msgstr "Secundário de %s%s%s: %s"
+msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/TicketBulk/PrimarySecondary.pm
 msgid "Unset Primary Tickets"
@@ -64,9 +63,7 @@ msgstr "Todos os Tickets Secundários"
 
 #. SysConfig
 msgid "Allows adding notes in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Permite adicionar notas no ecrã Primário Secundário de um bilhete ampliado "
-"na interface do agente."
+msgstr "Permite adicionar notas no ecrã Primário Secundário de um bilhete ampliado na interface do agente."
 
 #. SysConfig
 msgid "Change the PrimarySecondary state of the ticket."
@@ -235,3 +232,8 @@ msgstr ""
 #. SysConfig
 msgid "Ticket PrimarySecondary."
 msgstr ""
+
+#. SysConfig
+msgid "Primary Secondary"
+msgstr ""
+

@@ -16,28 +16,28 @@ sub Data {
     my $Self = shift;
 
     # TT Template: Kernel/Output/HTML/Templates/Standard/AgentTicketPrimarySecondary.tt
-    $Self->{Translation}->{'Manage Primary/Secondary status for %s%s%s'} = '';
+    $Self->{Translation}->{'Manage Primary/Secondary status for %s%s%s'} = 'Gerir Primário/Estado Secundário para %s%s%s';
 
     # Perl Module: Kernel/Modules/AgentTicketPrimarySecondary.pm
-    $Self->{Translation}->{'New Primary Ticket'} = '';
-    $Self->{Translation}->{'Unset Primary Ticket'} = '';
-    $Self->{Translation}->{'Unset Secondary Ticket'} = '';
+    $Self->{Translation}->{'New Primary Ticket'} = 'Novo Ticket Primário';
+    $Self->{Translation}->{'Unset Primary Ticket'} = 'Ticket Primário não Definido';
+    $Self->{Translation}->{'Unset Secondary Ticket'} = 'Ticket Secundário Não Definido';
     $Self->{Translation}->{'Secondary of %s%s%s: %s'} = '';
 
     # Perl Module: Kernel/Output/HTML/TicketBulk/PrimarySecondary.pm
-    $Self->{Translation}->{'Unset Primary Tickets'} = '';
-    $Self->{Translation}->{'Unset Secondary Tickets'} = '';
+    $Self->{Translation}->{'Unset Primary Tickets'} = 'Tickets Primários Não Definidos';
+    $Self->{Translation}->{'Unset Secondary Tickets'} = 'Tickets Secundários Não Definidos';
 
     # Perl Module: Kernel/System/DynamicField/Driver/PrimarySecondary.pm
-    $Self->{Translation}->{'Primary'} = '';
-    $Self->{Translation}->{'Secondary of %s%s%s'} = '';
-    $Self->{Translation}->{'Primary Ticket'} = '';
+    $Self->{Translation}->{'Primary'} = 'Primário';
+    $Self->{Translation}->{'Secondary of %s%s%s'} = 'Secundário de';
+    $Self->{Translation}->{'Primary Ticket'} = 'Ticket Primário';
 
     # SysConfig
-    $Self->{Translation}->{'All primary tickets'} = '';
-    $Self->{Translation}->{'All secondary tickets'} = '';
+    $Self->{Translation}->{'All primary tickets'} = 'Todos os Tickets Primários';
+    $Self->{Translation}->{'All secondary tickets'} = 'Todos os Tickets Secundários';
     $Self->{Translation}->{'Allows adding notes in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface.'} =
-        '';
+        'Permite adicionar notas no ecrã Primário Secundário de um bilhete ampliado na interface do agente.';
     $Self->{Translation}->{'Change the PrimarySecondary state of the ticket.'} = '';
     $Self->{Translation}->{'Defines dynamic field name for primary ticket feature.'} = '';
     $Self->{Translation}->{'Defines if a ticket lock is required in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).'} =
@@ -74,6 +74,7 @@ sub Data {
     $Self->{Translation}->{'Parameters for the dashboard backend of the secondary tickets overview of the agent interface. "Limit" is the number of entries shown by default. "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.'} =
         '';
     $Self->{Translation}->{'Primary / Secondary'} = '';
+    $Self->{Translation}->{'Primary Secondary'} = '';
     $Self->{Translation}->{'Primary Tickets'} = '';
     $Self->{Translation}->{'PrimarySecondary'} = '';
     $Self->{Translation}->{'PrimarySecondary module for Ticket Bulk feature.'} = '';
@@ -114,9 +115,9 @@ sub Data {
     $Self->{Translation}->{'Ticket PrimarySecondary.'} = '';
 
 
-    $Self->{JavaScriptStrings} //= [];
-    push @{$Self->{JavaScriptStrings}}, (
+    push @{ $Self->{JavaScriptStrings} //= [] }, (
     );
+
 }
 
 1;

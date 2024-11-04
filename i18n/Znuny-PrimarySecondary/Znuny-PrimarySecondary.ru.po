@@ -230,3 +230,7 @@ msgstr ""
 msgid "Ticket PrimarySecondary."
 msgstr ""
 
+#. SysConfig
+msgid "Primary Secondary"
+msgstr ""
+
