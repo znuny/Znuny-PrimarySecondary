@@ -106,6 +106,65 @@ sub new {
     return $Self;
 }
 
+sub SearchSQLGet {
+    my ( $Self, %Param ) = @_;
+
+    if ( $Param{Operator} eq 'Like' ) {
+        my $SQL = $Kernel::OM->Get('Kernel::System::DB')->QueryCondition(
+            Key   => "$Param{TableAlias}.value_text",
+            Value => $Param{SearchTerm},
+        );
+
+        return $SQL;
+    }
+
+    my %Operators = (
+        Equals            => '=',
+        GreaterThan       => '>',
+        GreaterThanEquals => '>=',
+        SmallerThan       => '<',
+        SmallerThanEquals => '<=',
+    );
+
+    if ( $Param{Operator} eq 'Empty' ) {
+        if ( $Param{SearchTerm} ) {
+            return " $Param{TableAlias}.value_text IS NULL OR $Param{TableAlias}.value_text = '' ";
+        }
+        else {
+            my $DatabaseType = $Kernel::OM->Get('Kernel::System::DB')->{'DB::Type'};
+            if ( $DatabaseType eq 'oracle' ) {
+                return " $Param{TableAlias}.value_text IS NOT NULL ";
+            }
+            else {
+                return " $Param{TableAlias}.value_text <> '' ";
+            }
+        }
+    }
+    elsif ( !$Operators{ $Param{Operator} } ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            'Priority' => 'error',
+            'Message'  => "Unsupported Operator $Param{Operator}",
+        );
+        return;
+    }
+
+    my $QuotedSearchTerm = $Kernel::OM->Get('Kernel::System::DB')->Quote( $Param{SearchTerm} );
+    my $SQL              = " $Param{TableAlias}.value_text $Operators{ $Param{Operator} } '$QuotedSearchTerm' ";
+
+    #
+    # Add support for deprecated terms 'Master' and 'Slave'.
+    # This is necessary because the deprecated stored values 'Master' and 'SlaveOf' will not be
+    # migrated to 'Primary' and 'Secondary' on package upgrade.
+    #
+    my $DeprecatedQuotedSearchTerm = $QuotedSearchTerm;
+    $DeprecatedQuotedSearchTerm =~ s{Primary}{Master}gi;
+    $DeprecatedQuotedSearchTerm =~ s{Secondary}{Slave}gi;    # Also handles "SecondaryOf"
+
+    $SQL .= "OR $Param{TableAlias}.value_text $Operators{ $Param{Operator} } '$DeprecatedQuotedSearchTerm' ";
+
+    return $SQL;
+}
+
 sub ValueIsDifferent {
     my ( $Self, %Param ) = @_;
 
@@ -304,13 +363,12 @@ sub PossibleValuesGet {
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
     # find all current open primary secondary tickets and the legacy master slave tickets
-    my @TicketIDs;
-    my @PrimaryTickets = $TicketObject->TicketSearch(
+    my @TicketIDs = $TicketObject->TicketSearch(
         Result => 'ARRAY',
 
         # primary secondary dynamic field
         'DynamicField_' . $Param{DynamicFieldConfig}->{Name} => {
-            Equals => 'Primary',
+            Equals => [ 'Primary', 'Master', ],
         },
 
         StateType  => 'Open',
@@ -318,21 +376,6 @@ sub PossibleValuesGet {
         UserID     => $LayoutObject->{UserID},
         Permission => 'ro',
     );
-    my @MasterTickets = $TicketObject->TicketSearch(
-        Result => 'ARRAY',
-
-        # primary secondary dynamic field
-        'DynamicField_' . $Param{DynamicFieldConfig}->{Name} => {
-            Equals => 'Master',
-        },
-
-        StateType  => 'Open',
-        Limit      => 60,
-        UserID     => $LayoutObject->{UserID},
-        Permission => 'ro',
-    );
-    push @TicketIDs, @MasterTickets;
-    push @TicketIDs, @PrimaryTickets;
 
     # set dynamic field possible values
     $PossibleValues{Primary} = $LayoutObject->{LanguageObject}->Translate('New Primary Ticket');

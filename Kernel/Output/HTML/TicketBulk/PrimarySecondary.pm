@@ -173,13 +173,12 @@ sub _GetPrimarySecondaryData {
     if ($UpdatePrimarySecondary) {
 
         # find all current open primary secondary tickets and the legacy master slave tickets
-        my @TicketIDs;
-        my @PrimaryTickets = $TicketObject->TicketSearch(
+        my @TicketIDs = $TicketObject->TicketSearch(
             Result => 'ARRAY',
 
             # primary secondary dynamic field
             'DynamicField_' . $Param{PrimarySecondaryDynamicField} => {
-                Equals => 'Primary',
+                Equals => [ 'Primary', 'Master', ],
             },
 
             StateType  => 'Open',
@@ -187,21 +186,6 @@ sub _GetPrimarySecondaryData {
             UserID     => $Param{UserID},
             Permission => 'ro',
         );
-        my @MasterTickets = $TicketObject->TicketSearch(
-            Result => 'ARRAY',
-
-            # primary secondary dynamic field
-            'DynamicField_' . $Param{PrimarySecondaryDynamicField} => {
-                Equals => 'Master',
-            },
-
-            StateType  => 'Open',
-            Limit      => 60,
-            UserID     => $Param{UserID},
-            Permission => 'ro',
-        );
-        push @TicketIDs, @MasterTickets;
-        push @TicketIDs, @PrimaryTickets;
 
         my $TicketHook        = $ConfigObject->Get('Ticket::Hook');
         my $TicketHookDivider = $ConfigObject->Get('Ticket::HookDivider');

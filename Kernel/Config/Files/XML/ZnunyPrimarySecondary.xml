@@ -351,7 +351,7 @@
                 <Item Key="Module">Kernel::Output::HTML::Dashboard::TicketGeneric</Item>
                 <Item Key="Title" Translatable="1">Primary Tickets</Item>
                 <Item Key="Description" Translatable="1">All primary tickets</Item>
-                <Item Key="Attributes">DynamicField_PrimarySecondary_Equals=Primary;StateType=open;StateType=new;</Item>
+                <Item Key="Attributes">DynamicField_PrimarySecondary_Equals=Primary;DynamicField_PrimarySecondary_Equals=Master;StateType=open;StateType=new;</Item>
                 <Item Key="Filter">All</Item>
                 <Item Key="Time">Age</Item>
                 <Item Key="Limit">10</Item>
@@ -397,7 +397,7 @@
                 <Item Key="Module">Kernel::Output::HTML::Dashboard::TicketGeneric</Item>
                 <Item Key="Title" Translatable="1">Secondary Tickets</Item>
                 <Item Key="Description" Translatable="1">All secondary tickets</Item>
-                <Item Key="Attributes">DynamicField_PrimarySecondary_Like=Secondary*;StateType=open;StateType=new;</Item>
+                <Item Key="Attributes">DynamicField_PrimarySecondary_Like=Secondary*;DynamicField_PrimarySecondary_Like=Slave*;StateType=open;StateType=new;</Item>
                 <Item Key="Filter">All</Item>
                 <Item Key="Time">Age</Item>
                 <Item Key="Limit">10</Item>
