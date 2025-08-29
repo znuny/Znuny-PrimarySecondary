@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <otrs_package version="1.0">
     <Name>Znuny-PrimarySecondary</Name>
-    <Version>7.1.2</Version>
+    <Version>7.2.1</Version>
     <Framework>7.2.x</Framework>
     <Vendor>Znuny GmbH</Vendor>
     <URL>https://www.znuny.org/</URL>
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
     <Description Lang="en">Includes "Ticket Primary/Secondary" feature.</Description>
     <Description Lang="de">Enthält "Ticket Primary/Secondary" Funktionalität.</Description>
+    <ChangeLog Version="7.2.1" Date="2025-08-29 10:40:28 +0200">Initial release for Znuny 7.2.</ChangeLog>
     <ChangeLog Version="7.1.2" Date="2024-12-05 14:26:30 +0100">Added support for deprecated flags "Master" and "SlaveOf" to dynamic field type "PrimarySecondary" when searching for primary and secondary tickets. Dashboards now search for Master and Primary in the Field PrimaryMaster.</ChangeLog>
     <ChangeLog Version="7.1.1" Date="2024-07-26 10:49:36 +0200">Initial release for Znuny 7.1.</ChangeLog>
     <ChangeLog Version="7.0.1" Date="2023-09-25 20:26:18 +0200">Initial release for Znuny 7.0.</ChangeLog>
