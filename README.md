@@ -7,7 +7,7 @@ This package contains the functionality of primary and secondary tickets. Primar
 
 **Prerequisites**
 
-- Znuny 7.1
+- Znuny 7.2
 
 
 **Installation**
