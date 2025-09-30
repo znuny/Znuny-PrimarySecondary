@@ -74,7 +74,7 @@ sub Display {
     my $DynamicFieldHTML = $DynamicFieldBackendObject->EditFieldRender(
         DynamicFieldConfig   => $Self->{DynamicFieldConfig},
         PossibleValuesFilter => $PossibleValuesFilter,
-        ServerError          => $ServerError || '',
+        ServerError          => $ServerError  || '',
         ErrorMessage         => $ErrorMessage || '',
         LayoutObject         => $LayoutObject,
         ParamObject          => $ParamObject,
