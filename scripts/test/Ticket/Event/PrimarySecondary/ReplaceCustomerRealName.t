@@ -94,7 +94,7 @@ my $PrimaryTicketID     = $TicketObject->TicketCreate(
     State        => 'new',
     CustomerNo   => $TestCustomerUserLogin1,
     CustomerUser => $TestCustomerUserLogin1,
-    ,
+
     OwnerID => 1,
     UserID  => 1,
 );

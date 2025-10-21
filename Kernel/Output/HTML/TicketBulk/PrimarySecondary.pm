@@ -69,7 +69,7 @@ sub Display {
     my $DynamicFieldHTML = $Kernel::OM->Get('Kernel::System::DynamicField::Backend')->EditFieldRender(
         DynamicFieldConfig   => $Self->{DynamicFieldConfig},
         PossibleValuesFilter => $PossibleValuesFilter,
-        ServerError          => $ServerError || '',
+        ServerError          => $ServerError  || '',
         ErrorMessage         => $ErrorMessage || '',
         LayoutObject         => $Kernel::OM->Get('Kernel::Output::HTML::Layout'),
         ParamObject          => $Kernel::OM->Get('Kernel::System::Web::Request'),

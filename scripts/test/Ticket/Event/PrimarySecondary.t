@@ -88,7 +88,7 @@ my $PrimaryTicketID     = $TicketObject->TicketCreate(
     State        => 'new',
     CustomerNo   => $TestCustomerUserLogin,
     CustomerUser => $TestCustomerUserLogin,
-    ,
+
     OwnerID => 1,
     UserID  => 1,
 );
