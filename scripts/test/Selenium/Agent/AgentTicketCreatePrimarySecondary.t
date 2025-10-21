@@ -71,7 +71,7 @@ $Selenium->RunTest(
         # Create test user and login.
         my $TestUserLogin = $Helper->TestUserCreate(
             Groups => [ 'admin', 'users' ],
-        ) || die "Did not get test user";
+        ) || die "Did not get test user";    ## no critic
 
         $Selenium->Login(
             Type     => 'Agent',
