@@ -78,7 +78,7 @@ $Selenium->RunTest(
         # Create test user.
         my $TestUserLogin = $HelperObject->TestUserCreate(
             Groups => [ 'admin', 'users' ],
-        ) || die "Did not get test user";
+        ) || die "Did not get test user";    ## no critic
 
         # Get test user ID.
         my $TestUserID = $UserObject->UserLookup(

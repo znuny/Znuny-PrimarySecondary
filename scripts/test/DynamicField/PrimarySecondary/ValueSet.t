@@ -45,7 +45,7 @@ my $RandomID = $HelperObject->GetRandomID();
 # create test tickets
 my @TicketIDs;
 my @TicketNumbers;
-for my $Ticket ( 1 .. 3 ) {
+for my $Ticket ( 1 .. 5 ) {
     my $TicketNumber = $TicketObject->TicketCreateNumber();
     my $TicketID     = $TicketObject->TicketCreate(
         TN           => $TicketNumber,
@@ -393,6 +393,69 @@ $Self->True(
 $Self->True(
     IsHashRefWithData( \%LinkKeyList ),
     "LinkKeyList() Primary/Secondary link found - Ticket ID $TicketIDs[0], $TicketIDs[1] and $TicketIDs[2] - KeepParentChildAfterUpdate sysconfig enabled",
+);
+
+# ------------------------------------------------------------ #
+# test Secondary ticket value set after applying different link type to secondary ticket
+# ------------------------------------------------------------ #
+
+# add link for fifth (secondary) to fourth (primary) ticket that is other than "ParentChild"
+$Success = $LinkObject->LinkAdd(
+    SourceObject => 'Ticket',
+    SourceKey    => $TicketIDs[4],
+    TargetObject => 'Ticket',
+    TargetKey    => $TicketIDs[3],
+    Type         => 'Normal',
+    State        => 'Valid',
+    UserID       => 1,
+);
+
+$Self->True(
+    $Success,
+    "LinkAdd() Ticket ID $TicketIDs[4] (secondary) link Normal added to Ticket ID:$TicketIDs[3] (primary)",
+);
+
+# set fourth test ticket as primary ticket
+$Success = $DynamicFieldBackendObject->ValueSet(
+    DynamicFieldConfig => $PrimarySecondaryDynamicFieldData,
+    FieldID            => $PrimarySecondaryDynamicFieldData->{ID},
+    ObjectID           => $TicketIDs[3],
+    Value              => 'Primary',
+    UserID             => 1,
+);
+$Self->True(
+    $Success,
+    "ValueSet() Ticket ID $TicketIDs[3] DynamicField $PrimarySecondaryDynamicField updated as PrimaryTicket",
+);
+
+# set fifth test ticket as secondary ticket
+$Success = $DynamicFieldBackendObject->ValueSet(
+    DynamicFieldConfig => $PrimarySecondaryDynamicFieldData,
+    FieldID            => $PrimarySecondaryDynamicFieldData->{ID},
+    ObjectID           => $TicketIDs[4],
+    Value              => "SecondaryOf:$TicketNumbers[3]",
+    UserID             => 1,
+);
+$Self->True(
+    $Success,
+    "ValueSet() Ticket ID $TicketIDs[4] DynamicField $PrimarySecondaryDynamicField updated as SecondaryOf:$TicketNumbers[3]",
+);
+
+# verify there is parent-child link between Primary/Secondary tickets
+my $LinkList = $LinkObject->LinkList(
+    Object    => 'Ticket',
+    Key       => $TicketIDs[4],
+    Object2   => 'Ticket',
+    State     => 'Valid',
+    Direction => 'Both',
+    UserID    => 1,
+);
+
+$Self->True(
+    IsHashRefWithData($LinkList) && $LinkList->{Ticket} && $LinkList->{Ticket}->{ParentChild} &&
+        $LinkList->{Ticket}->{ParentChild}->{Source}
+        && $LinkList->{Ticket}->{ParentChild}->{Source}->{ $TicketIDs[3] } ? 1 : 0,
+    "LinkKeyList() Valid Secondary link found - Ticket ID $TicketIDs[3] and $TicketIDs[4]",
 );
 
 # Cleanup is done by RestoreDatabase.

@@ -90,7 +90,7 @@ sub new {
                 !$MainObject->RequireBaseClass( $Extension->{Module} )
                 )
             {
-                die "Can't load dynamic fields backend module"
+                die "Can't load dynamic fields backend module"    ## no critic
                     . " $Extension->{Module}! $@";
             }
         }
@@ -510,7 +510,49 @@ sub _HandleLinks {
             UserID       => $Param{UserID},
         );
 
-        $LinkObject->LinkAdd(
+        my $LinkList = $LinkObject->LinkList(
+            Object    => 'Ticket',
+            Key       => $Param{TicketID},
+            Object2   => 'Ticket',
+            State     => 'Valid',
+            Direction => 'Both',
+            UserID    => 1,
+        );
+
+        # check if any other link type than "ParentChild"
+        # is linked to the same master ticket
+
+        # get all links of secondary ticket
+        my %ExistingTicketLinks = %{ $LinkList->{Ticket} // {} };
+
+        # remove parent child relation from data
+        delete $ExistingTicketLinks{ParentChild};
+        LINKTYPE:
+        for my $LinkType ( sort keys %ExistingTicketLinks ) {
+            next LINKTYPE if !IsHashRefWithData( $ExistingTicketLinks{$LinkType} );
+            for my $Direction ( sort keys %{ $ExistingTicketLinks{$LinkType} } ) {
+                my $LinkHashRefValue     = $ExistingTicketLinks{$LinkType}->{$Direction};
+                my %LinkHashReverseValue = reverse %{ $LinkHashRefValue // () };
+                my $LinkValue            = $LinkHashReverseValue{1};
+
+                # relation other than ParentChild found, delete it
+                if ( $LinkValue && $LinkValue eq $SourceKey ) {
+                    $LinkObject->LinkDelete(
+                        Object1 => 'Ticket',
+                        Key1    => $Param{TicketID},
+                        Object2 => 'Ticket',
+                        Key2    => $SourceKey,
+                        Type    => $LinkType,
+                        UserID  => 1,
+                    );
+
+                    # only signle link type is allowed, therefore end statement
+                    last LINKTYPE;
+                }
+            }
+        }
+
+        my $Success = $LinkObject->LinkAdd(
             SourceObject => 'Ticket',
             SourceKey    => $SourceKey,
             TargetObject => 'Ticket',
