@@ -230,8 +230,8 @@ sub Run {
                 my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
                 my @Articles = $ArticleObject->ArticleList(
-                    TicketID          => $TicketID,
-                    ArticleSenderType => 'customer',
+                    TicketID   => $TicketID,
+                    SenderType => 'customer',
                 );
 
                 my $CommunicationChannelObject = $Kernel::OM->Get('Kernel::System::CommunicationChannel');
