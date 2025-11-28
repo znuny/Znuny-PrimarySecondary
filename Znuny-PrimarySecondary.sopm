@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <otrs_package version="1.0">
     <Name>Znuny-PrimarySecondary</Name>
-    <Version>7.2.2</Version>
+    <Version>7.2.3</Version>
     <Framework>7.2.x</Framework>
     <Vendor>Znuny GmbH</Vendor>
     <URL>https://www.znuny.org/</URL>
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
     <Description Lang="en">Includes "Ticket Primary/Secondary" feature.</Description>
     <Description Lang="de">Enthält "Ticket Primary/Secondary" Funktionalität.</Description>
+    <ChangeLog Version="7.2.3" Date="2025-11-28 14:14:37 +0100">Fixed an issue with invalid recipient being set to send email for secondary tickets when no valid ticket customer user is set.</ChangeLog>
     <ChangeLog Version="7.2.2" Date="2025-10-21 12:35:06 +0200">Fixed: Existing link of secondary ticket other than type "ParentChild" will be deleted before linking it to the primary ticket with link type "ParentChild" to ensure updating this relation.</ChangeLog>
     <ChangeLog Version="7.2.1" Date="2025-08-29 10:40:28 +0200">Initial release for Znuny 7.2.</ChangeLog>
     <ChangeLog Version="7.1.2" Date="2024-12-05 14:26:30 +0100">Added support for deprecated flags "Master" and "SlaveOf" to dynamic field type "PrimarySecondary" when searching for primary and secondary tickets. Dashboards now search for Master and Primary in the Field PrimaryMaster.</ChangeLog>
