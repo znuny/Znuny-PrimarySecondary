@@ -114,8 +114,8 @@ sub Data {
         'Diese Einstellung ist veraltet und wird in weiteren Versionen von ZnunyPrimarySecondary entfernt.';
     $Self->{Translation}->{'Ticket PrimarySecondary.'} = 'Ticket PrimarySecondary.';
 
-    $Self->{JavaScriptStrings} //= [];
-    push @{$Self->{JavaScriptStrings}}, (
+
+    push @{ $Self->{JavaScriptStrings} //= [] }, (
     );
 
 }
