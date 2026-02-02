@@ -132,20 +132,10 @@ $Selenium->RunTest(
         my $Handles = $Selenium->get_window_handles();
         $Selenium->switch_to_window( $Handles->[1] );
 
-        # Wait until page has loaded, if necessary.
+        # Wait until form has loaded, if necessary.
         $Selenium->WaitFor(
             JavaScript =>
-                'return typeof($) === "function" && $(".WidgetSimple").length;'
-        );
-
-        # Open collapsed widgets, if necessary.
-        $Selenium->execute_script(
-            "\$('.WidgetSimple.Collapsed .WidgetAction > a').trigger('click');"
-        );
-
-        $Selenium->WaitFor(
-            JavaScript =>
-                'return typeof($) === "function" && $(".WidgetSimple.Expanded").length;'
+                'return typeof($) === "function" && $("#Compose").length;'
         );
 
         # Check page.
@@ -414,16 +404,23 @@ $Selenium->RunTest(
         $Selenium->find_element( "#FromCustomer", 'css' )->send_keys($TestCustomer);
         $Selenium->WaitFor( JavaScript => 'return !$(".AJAXLoader:visible").length;' );
 
-        # Lose the focus.
-        $Selenium->find_element( 'body', 'css' )->click();
+        $Selenium->execute_script(
+            "if (typeof(jQuery) === 'function') {"
+                . " var e = jQuery.Event('keydown');"
+                . " e.which = 13;"
+                . " jQuery('#FromCustomer').trigger(e);"
+                . "}"
+        );
         $Selenium->WaitFor(
-            JavaScript => 'return $("#TicketCustomerContentFromCustomer input.CustomerTicketText").length;'
+            JavaScript =>
+                'return typeof($) === "function" && $("#FromCustomer").closest(".modCustomerSelector").find("input[name^=CustomerTicketText_]").length;'
         );
 
-        $Selenium->InputFieldValueSet(
-            Element => '#Dest',
-            Value   => '2||Raw',
+        $Selenium->WaitForjQueryEventBound(
+            CSSSelector => '#Dest',
+            Event       => 'change',
         );
+        $Selenium->execute_script("\$('#Dest').val('2||Raw').trigger('redraw.InputField').trigger('change');");
         $Selenium->WaitFor( JavaScript => 'return !$(".AJAXLoader:visible").length;' );
 
         $Selenium->find_element( "#Subject",  'css' )->clear();
@@ -443,7 +440,7 @@ $Selenium->RunTest(
 
         $Selenium->WaitFor(
             JavaScript =>
-                'return typeof($) === "function" && $(".MessageBox a[href*=\'AgentTicketZoom;TicketID=\']").length;'
+                'return window.location.href.indexOf("Action=AgentTicketPhone;Subaction=Created;TicketID=") > -1;'
         );
 
         my @Ticket   = split( 'TicketID=', $Selenium->get_current_url() );

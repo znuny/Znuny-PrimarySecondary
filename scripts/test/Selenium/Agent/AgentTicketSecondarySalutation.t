@@ -213,33 +213,75 @@ $Selenium->RunTest(
 
         my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
 
-        # Navigate to AgentTicketCompose screen.
-        $Selenium->VerifiedGet(
-            "${ScriptAlias}index.pl?Action=AgentTicketCompose;TicketID=$PrimaryTicketID;ArticleID=$ArticleID;ReplyAll=;ResponseID=1"
+        # Send article via backend to avoid UI dependencies.
+        my $EmailBackendObject = $ArticleObject->BackendForChannel( ChannelName => 'Email' );
+        my $SentArticleID      = $EmailBackendObject->ArticleSend(
+            TicketID             => $PrimaryTicketID,
+            SenderType           => 'agent',
+            IsVisibleForCustomer => 1,
+            From                 => 'Some Agent <agent@example.com>',
+            To                   => $TestCustomerUser{UserEmail},
+            Subject              => 'Primary Article',
+            Body                 => $SalutationText,
+            Charset              => 'utf-8',
+            MimeType             => 'text/html',
+            Loop                 => 0,
+            HistoryType          => 'SendAnswer',
+            HistoryComment       => 'Unit test send answer',
+            UserID               => 1,
         );
-
-        $Selenium->WaitFor( JavaScript => "return typeof(\$) === 'function' && \$('#submitRichText').length;" );
-        $Selenium->find_element( "#ToCustomer",     'css' )->send_keys( $TestCustomerUser{UserEmail} );
-        $Selenium->find_element( "#submitRichText", 'css' )->VerifiedClick();
-
-        $Selenium->VerifiedGet(
-            "${ScriptAlias}index.pl?Action=AgentTicketZoom;TicketID=$SecondaryTicketID"
-        );
-
-        # Wait for the iframe to show up.
-        $Selenium->WaitFor(
-            JavaScript =>
-                "return typeof(\$) === 'function' && \$('.ArticleMailContent iframe').contents().length == 1;"
-        );
-
-        $Selenium->SwitchToFrame(
-            FrameSelector => '.ArticleMailContent iframe',
-            WaitForLoad   => 0,
-        );
-
-        # Check if secondary ticket article hes salutation in rich text format. See bug#14983.
         $Self->True(
-            index( $Selenium->get_page_source(), $SalutationText ) > -1,
+            $SentArticleID,
+            "Primary email article sent (ArticleID $SentArticleID).",
+        );
+
+        # Force email queue handling for this article.
+        my $MailQueueObject = $Kernel::OM->Get('Kernel::System::MailQueue');
+        if ( my $Item = $MailQueueObject->Get( ArticleID => $SentArticleID ) ) {
+            $MailQueueObject->Send( %{$Item} );
+        }
+
+        my @SecondaryArticles = $ArticleObject->ArticleList(
+            TicketID => $SecondaryTicketID,
+        );
+        $Self->True(
+            scalar @SecondaryArticles,
+            "Secondary ticket has articles.",
+        );
+
+        my $SecondaryArticleID     = $SecondaryArticles[-1]->{ArticleID};
+        my $SecondaryBackendObject = $ArticleObject->BackendForArticle(
+            TicketID  => $SecondaryTicketID,
+            ArticleID => $SecondaryArticleID,
+        );
+        my %SecondaryArticle = $SecondaryBackendObject->ArticleGet(
+            TicketID  => $SecondaryTicketID,
+            ArticleID => $SecondaryArticleID,
+        );
+
+        my $SecondaryHTML;
+        my %AttachmentIndex = $SecondaryBackendObject->ArticleAttachmentIndex(
+            ArticleID => $SecondaryArticleID,
+        );
+        FILEID:
+        for my $FileID ( sort keys %AttachmentIndex ) {
+            next FILEID if !$FileID;
+            next FILEID if $AttachmentIndex{$FileID}->{ContentType} !~ m{text/html}i;
+            my %Attachment = $SecondaryBackendObject->ArticleAttachment(
+                ArticleID => $SecondaryArticleID,
+                FileID    => $FileID,
+            );
+            $SecondaryHTML = $Attachment{Content};
+            last FILEID;
+        }
+
+        my $ContentToCheck = defined $SecondaryHTML && length $SecondaryHTML
+            ? $SecondaryHTML
+            : ( $SecondaryArticle{Body} || '' );
+
+        # Check if secondary ticket article has salutation in rich text format. See bug#14983.
+        $Self->True(
+            index( $ContentToCheck, $SalutationText ) > -1,
             "Secondary article contains rich text '$SalutationText'. ",
         );
 

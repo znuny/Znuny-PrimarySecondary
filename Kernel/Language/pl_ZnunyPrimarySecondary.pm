@@ -114,8 +114,8 @@ sub Data {
         'To ustawienie jest już nieaktualne i zostanie usunięte w następnych wersjach ZnunyPrimarySecondary.';
     $Self->{Translation}->{'Ticket PrimarySecondary.'} = 'Zgłoszenie NadrzędnePodrzędne.';
 
-
-    push @{ $Self->{JavaScriptStrings} //= [] }, (
+    $Self->{JavaScriptStrings} //= [];
+    push @{$Self->{JavaScriptStrings}}, (
     );
 
 }

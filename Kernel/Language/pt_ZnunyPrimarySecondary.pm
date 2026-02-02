@@ -5,6 +5,7 @@
 # the enclosed file COPYING for license information (AGPL). If you
 # did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
 # --
+## nofilter(TidyAll::Plugin::Znuny::CodeStyle::TODOCheck)
 
 package Kernel::Language::pt_ZnunyPrimarySecondary;
 
@@ -114,8 +115,8 @@ sub Data {
         '';
     $Self->{Translation}->{'Ticket PrimarySecondary.'} = '';
 
-
-    push @{ $Self->{JavaScriptStrings} //= [] }, (
+    $Self->{JavaScriptStrings} //= [];
+    push @{$Self->{JavaScriptStrings}}, (
     );
 
 }

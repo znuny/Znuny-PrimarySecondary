@@ -59,10 +59,10 @@ sub new {
     bless( $Self, $Type );
 
     # Force a reload of ZZZAuto.pm to get the fresh configuration values.
+    MODULE:
     for my $Module ( sort keys %INC ) {
-        if ( $Module =~ m/ZZZAA?uto\.pm$/ ) {
-            delete $INC{$Module};
-        }
+        next MODULE if $Module !~ m/ZZZAA?uto\.pm$/;
+        delete $INC{$Module};
     }
 
     $Kernel::OM->ObjectsDiscard(
@@ -450,8 +450,7 @@ sub _SetDashboardConfig {
     #
 
     # get dynamic field name from SysConfig
-    my $PrimarySecondaryDynamicField
-        = $Kernel::OM->Get('Kernel::Config')->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
+    my $PrimarySecondaryDynamicField = $ConfigObject->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
 
     my $PrimaryConfig   = $DashboardConfig->{'0900-TicketPrimary'}   // {};
     my $SecondaryConfig = $DashboardConfig->{'0910-TicketSecondary'} // {};

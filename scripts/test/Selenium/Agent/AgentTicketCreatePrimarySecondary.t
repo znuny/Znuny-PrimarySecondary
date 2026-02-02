@@ -98,10 +98,18 @@ $Selenium->RunTest(
 
         my $PrimaryTicketSubject = "Primary Ticket";
         $Selenium->find_element( "#FromCustomer", 'css' )->send_keys($TestCustomerLoginPhone);
-        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("li.ui-menu-item:visible").length;' );
-
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof($) === "function" && $("#FromCustomer").closest(".modCustomerSelector").find(".customerSelectorFieldSuggestItem:visible").length;'
+        );
         $Selenium->execute_script(
-            "\$('li.ui-menu-item:nth-child(1) a').trigger('click');",
+            "var \$item = jQuery('#FromCustomer').closest('.modCustomerSelector')"
+                . ".find('.customerSelectorFieldSuggestItem:visible').first();"
+                . "if (\$item.length) { \$item.trigger('click'); }"
+        );
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof($) === "function" && $("#FromCustomer").closest(".modCustomerSelector").find(".customerSelectorFieldInputSelectedCustomer").length;'
         );
 
         # Wait for AJAX to finish.
@@ -163,10 +171,19 @@ $Selenium->RunTest(
         # Wait for AJAX to finish.
         $WaitForAJAX->();
 
-        $Selenium->find_element( "#ToCustomer", 'css' )->send_keys($TestCustomerLoginsEmail);
-        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("li.ui-menu-item:visible").length;' );
+        $Selenium->find_element( "#customerSelectorInput", 'css' )->send_keys($TestCustomerLoginsEmail);
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof($) === "function" && $("#customerSelectorInput").closest(".modCustomerSelector").find(".customerSelectorFieldSuggestItem:visible").length;'
+        );
         $Selenium->execute_script(
-            "\$('li.ui-menu-item:nth-child(1) a').trigger('click');",
+            "var \$item = jQuery('#customerSelectorInput').closest('.modCustomerSelector')"
+                . ".find('.customerSelectorFieldSuggestItem:visible').first();"
+                . "if (\$item.length) { \$item.trigger('click'); }"
+        );
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof($) === "function" && $("#customerSelectorInput").closest(".modCustomerSelector").find(".customerSelectorFieldInputSelectedCustomer").length;'
         );
 
         # Wait for AJAX to finish.
