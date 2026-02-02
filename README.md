@@ -6,7 +6,7 @@
     </picture>
   </a>
 
-  ![Build status](https://badge.proxy.znuny.com/Znuny-PrimarySecondary/rel-7_1)
+  ![Build status](https://badge.proxy.znuny.com/Znuny-PrimarySecondary/rel-7_3)
 </div>
 
 Znuny-PrimarySecondary
