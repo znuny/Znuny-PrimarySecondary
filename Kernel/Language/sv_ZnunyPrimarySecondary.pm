@@ -114,8 +114,8 @@ sub Data {
         '';
     $Self->{Translation}->{'Ticket PrimarySecondary.'} = '';
 
-    $Self->{JavaScriptStrings} //= [];
-    push @{$Self->{JavaScriptStrings}}, (
+
+    push @{ $Self->{JavaScriptStrings} //= [] }, (
     );
 
 }
