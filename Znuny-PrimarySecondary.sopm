@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <otrs_package version="1.0">
     <Name>Znuny-PrimarySecondary</Name>
-    <Version>7.3.2</Version>
+    <Version>7.3.3</Version>
     <Framework>7.3.x</Framework>
     <Vendor>Znuny GmbH</Vendor>
     <URL>https://www.znuny.org/</URL>
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
     <Description Lang="en">Includes "Ticket Primary/Secondary" feature.</Description>
     <Description Lang="de">Enthält "Ticket Primary/Secondary" Funktionalität.</Description>
+    <ChangeLog Version="7.3.3" Date="2026-04-29 21:18:01 +0200">Added StatsFieldParameterBuild function to overwrite base function StatsFieldParameterBuild in Kernel::System::DynamicField::Driver::BaseSelect. Ignore SysConfig DynamicFields::Driver::BaseSelect::EnableHistoricalValues. The historical values should always be retrieved.</ChangeLog>
     <ChangeLog Version="7.3.2" Date="2026-04-09 11:08:53 +0200">Updated .pm translation files.</ChangeLog>
     <ChangeLog Version="7.3.1" Date="2026-02-02 10:34:24 +0100">Initial release for Znuny 7.3.</ChangeLog>
     <ChangeLog Version="7.2.3" Date="2025-11-28 14:14:37 +0100">Fixed an issue with invalid recipient being set to send email for secondary tickets when no valid ticket customer user is set.</ChangeLog>
