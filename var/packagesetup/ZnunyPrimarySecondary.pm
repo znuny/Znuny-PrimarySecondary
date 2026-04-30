@@ -58,18 +58,11 @@ sub new {
     my $Self = {};
     bless( $Self, $Type );
 
-    # Force a reload of ZZZAuto.pm to get the fresh configuration values.
-    MODULE:
-    for my $Module ( sort keys %INC ) {
-        next MODULE if $Module !~ m/ZZZAA?uto\.pm$/;
-        delete $INC{$Module};
-    }
-
-    $Kernel::OM->ObjectsDiscard(
-        Objects => ['Kernel::Config'],
-    );
-
+    my $ZnunyHelperObject  = $Kernel::OM->Get('Kernel::System::ZnunyHelper');
     my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
+
+    # Force a reload of ZZZAuto.pm to get the fresh configuration values.
+    my $Success = $ZnunyHelperObject->_RebuildConfig();
 
     # get dynamic fields list
     $Self->{DynamicFieldsList} = $DynamicFieldObject->DynamicFieldListGet(
@@ -104,8 +97,6 @@ run the code install part
 sub CodeInstall {
     my ( $Self, %Param ) = @_;
 
-    #     my $MasterSlaveDynamicFieldID = $Self->_CheckMasterSlaveData();
-
     my $ConfigObject       = $Kernel::OM->Get('Kernel::Config');
     my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
 
@@ -119,6 +110,9 @@ sub CodeInstall {
         # Migrate DynamicFieldConfig.
         $Self->_MigrateToPrimarySecondary(%Param);
 
+        # Migrate DynamicFieldScreen
+        $Self->_MigrateDynamicFieldScreen(%Param);
+
         # Migrate SysConfig
         $Self->_MigratePrimarySecondarySysConfigSettings(%Param);
     }
@@ -129,6 +123,9 @@ sub CodeInstall {
 
     # Set dashboard config if needed
     $Self->_SetDashboardConfig(%Param);
+
+    # Set dynamic field screen if needed
+    $Self->_SetDynamicFieldScreen(%Param);
 
     return 1;
 }
@@ -177,6 +174,7 @@ sub CodeUninstall {
     my ( $Self, %Param ) = @_;
 
     $Self->_RemoveDynamicFields();
+    $Self->_RemoveDynamicFieldScreen();
 
     return 1;
 }
@@ -184,11 +182,11 @@ sub CodeUninstall {
 sub _SetDynamicFields {
     my ( $Self, %Param ) = @_;
 
-    # get config object
-    my $CacheObject  = $Kernel::OM->Get('Kernel::System::Cache');
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
-    my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
-    my $LogObject    = $Kernel::OM->Get('Kernel::System::Log');
+    my $CacheObject        = $Kernel::OM->Get('Kernel::System::Cache');
+    my $ConfigObject       = $Kernel::OM->Get('Kernel::Config');
+    my $DBObject           = $Kernel::OM->Get('Kernel::System::DB');
+    my $LogObject          = $Kernel::OM->Get('Kernel::System::Log');
+    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
 
     # get dynamic field names from SysConfig
     my $PrimarySecondaryDynamicField = $ConfigObject->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
@@ -223,9 +221,6 @@ sub _SetDynamicFields {
         }
     }
 
-    # get dynamic field object
-    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
-
     for my $NewFieldName ( sort keys %NewDynamicFields ) {
 
         # check if dynamic field already exists
@@ -249,7 +244,6 @@ sub _SetDynamicFields {
             }
 
             if ($Update) {
-
                 my $Success = $DynamicFieldObject->DynamicFieldUpdate(
                     %{$DynamicFieldConfig},
                     ValidID => 1,
@@ -264,6 +258,7 @@ sub _SetDynamicFields {
                     );
                 }
             }
+
             if ( $DynamicFieldConfig->{InternalField} ne '1' ) {
 
                 # update InternalField value manually since API does not support
@@ -308,36 +303,12 @@ sub _SetDynamicFields {
         }
     }
 
-    # enable dynamic field for ticket zoom
-    # get old configuration
-    my $WindowConfig  = $ConfigObject->Get('Ticket::Frontend::AgentTicketZoom');
-    my %DynamicFields = %{ $WindowConfig->{DynamicField} || {} };
-
-    $DynamicFields{$PrimarySecondaryDynamicField} =
-        defined $DynamicFields{$PrimarySecondaryDynamicField}
-        ? $DynamicFields{$PrimarySecondaryDynamicField}
-        : 1;
-
-    my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
-    return 0 if !$SysConfigObject->SettingsSet(
-        UserID   => 1,
-        Comments => 'ZnunyPrimarySecondary - deploy AgentTicketZoom dynamic fields',
-        Settings => [
-            {
-                Name           => 'Ticket::Frontend::AgentTicketZoom###DynamicField',
-                EffectiveValue => \%DynamicFields,
-                IsValid        => 1,
-            },
-        ],
-    );
-
     return 1;
 }
 
 sub _RemoveDynamicFields {
     my ( $Self, %Param ) = @_;
 
-    # get config object
     my $ConfigObject            = $Kernel::OM->Get('Kernel::Config');
     my $DynamicFieldObject      = $Kernel::OM->Get('Kernel::System::DynamicField');
     my $DynamicFieldValueObject = $Kernel::OM->Get('Kernel::System::DynamicFieldValue');
@@ -412,27 +383,6 @@ sub _RemoveDynamicFields {
         Objects => [ 'Kernel::Config', 'Kernel::System::DynamicField::Backend' ],
     );
 
-    # disable dynamic field for ticket zoom
-    # get old configuration
-    my $WindowConfig  = $ConfigObject->Get('Ticket::Frontend::AgentTicketZoom');
-    my %DynamicFields = %{ $WindowConfig->{DynamicField} || {} };
-
-    if ( defined $DynamicFields{$PrimarySecondaryDynamicField} ) {
-        $DynamicFields{$PrimarySecondaryDynamicField} = 0;
-    }
-
-    return if !$SysConfigObject->SettingsSet(
-        UserID   => 1,
-        Comments => 'ZnunyPrimarySecondary - deploy dynamic fields.',
-        Settings => [
-            {
-                Name           => 'Ticket::Frontend::AgentTicketZoom###DynamicField',
-                EffectiveValue => \%DynamicFields,
-                IsValid        => 1,
-            },
-        ],
-    );
-
     return 1;
 }
 
@@ -449,7 +399,6 @@ sub _SetDashboardConfig {
     # Replace dynamic field name (which is configurable) in attributes of dashboard settings.
     #
 
-    # get dynamic field name from SysConfig
     my $PrimarySecondaryDynamicField = $ConfigObject->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
 
     my $PrimaryConfig   = $DashboardConfig->{'0900-TicketPrimary'}   // {};
@@ -477,6 +426,149 @@ sub _SetDashboardConfig {
                 IsValid        => 1,
             },
         ],
+    );
+
+    return 1;
+}
+
+sub _SetDynamicFieldScreen {
+    my ( $Self, %Param ) = @_;
+
+    my $ConfigObject      = $Kernel::OM->Get('Kernel::Config');
+    my $ZnunyHelperObject = $Kernel::OM->Get('Kernel::System::ZnunyHelper');
+
+    my $PrimarySecondaryDynamicField = $ConfigObject->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
+
+    my %Screens = (
+        AgentTicketZoom => {
+            $PrimarySecondaryDynamicField => 1,
+        },
+    );
+
+    my $Success = $ZnunyHelperObject->_DynamicFieldsScreenEnable(%Screens);
+    return $Success;
+
+}
+
+sub _RemoveDynamicFieldScreen {
+    my ( $Self, %Param ) = @_;
+
+    my $ConfigObject      = $Kernel::OM->Get('Kernel::Config');
+    my $ZnunyHelperObject = $Kernel::OM->Get('Kernel::System::ZnunyHelper');
+
+    my $PrimarySecondaryDynamicField = $ConfigObject->Get('PrimarySecondary::DynamicField') || 'PrimarySecondary';
+
+    my %Screens = (
+        AgentTicketZoom => {
+            $PrimarySecondaryDynamicField => 1,
+        },
+    );
+
+    my $Success = $ZnunyHelperObject->_DynamicFieldsScreenDisable(%Screens);
+    return $Success;
+
+}
+
+sub _MigrateToPrimarySecondary {
+    my ( $Self, %Param ) = @_;
+
+    my $CacheObject        = $Kernel::OM->Get('Kernel::System::Cache');
+    my $ConfigObject       = $Kernel::OM->Get('Kernel::Config');
+    my $DBObject           = $Kernel::OM->Get('Kernel::System::DB');
+    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
+    my $LogObject          = $Kernel::OM->Get('Kernel::System::Log');
+    my $SysConfigObject    = $Kernel::OM->Get('Kernel::System::SysConfig');
+    my $ZnunyHelperObject  = $Kernel::OM->Get('Kernel::System::ZnunyHelper');
+
+    # get dynamic field names from SysConfig
+    my $MasterSlaveDynamicField = $ConfigObject->Get('MasterSlave::DynamicField') || 'MasterSlave';
+
+    my $NewDynamicField = $DynamicFieldObject->DynamicFieldGet(
+        Name => 'PrimarySecondary',
+    );
+    return 1 if IsHashRefWithData($NewDynamicField);
+
+    my $OldDynamicField = $DynamicFieldObject->DynamicFieldGet(
+        Name => $MasterSlaveDynamicField,
+    );
+    return 1 if !IsHashRefWithData($OldDynamicField);
+
+    # update the Label and FieldType of the dynamic field to PrimarySecondary
+    return 1 if !$DynamicFieldObject->DynamicFieldUpdate(
+        %{$OldDynamicField},
+        ID         => $OldDynamicField->{ID},
+        Name       => 'PrimarySecondary',
+        Label      => 'Primary Ticket',
+        FieldType  => 'PrimarySecondary',
+        ObjectType => 'Ticket',
+        Config     => {
+            DefaultValue       => '',
+            PossibleNone       => 1,
+            TranslatableValues => 1,
+        },
+        InternalField => 1,
+        ValidID       => 1,
+        Reorder       => 0,
+        UserID        => 1,
+    );
+
+    # update InternalField value manually since API does not support internal_field update
+    my $Success = $DBObject->Do(
+        SQL => '
+            UPDATE dynamic_field
+            SET internal_field = 1
+            WHERE id = ?',
+        Bind => [ \$OldDynamicField->{ID} ],
+    );
+    if ( !$Success ) {
+        $LogObject->Log(
+            Priority => 'error',
+            Message  => "Could not set dynamic field '$MasterSlaveDynamicField' as internal!",
+        );
+    }
+
+    # clean dynamic field cache
+    $CacheObject->CleanUp(
+        Type => 'DynamicField',
+    );
+
+    return 1;
+}
+
+sub _MigrateDynamicFieldScreen {
+    my ( $Self, %Param ) = @_;
+
+    my $ZnunyHelperObject = $Kernel::OM->Get('Kernel::System::ZnunyHelper');
+
+    my %Configs = $ZnunyHelperObject->_DynamicFieldsScreenConfigExport(
+        DynamicFields => [
+            'MasterSlave',
+        ],
+    );
+
+    return 1 if !%Configs;
+    return 1 if !$Configs{MasterSlave};
+
+    my %DisableScreens = ();
+    my %EnableScreens  = ();
+
+    for my $Screen ( sort keys %{ $Configs{MasterSlave} } ) {
+
+        my $Option = $Configs{MasterSlave}->{$Screen};
+        $DisableScreens{$Screen} = {
+            'MasterSlave' => $Option,
+        };
+        $EnableScreens{$Screen} = {
+            'PrimarySecondary' => $Option,
+        };
+    }
+
+    $ZnunyHelperObject->_DynamicFieldsScreenDisable(
+        %DisableScreens,
+    );
+
+    $ZnunyHelperObject->_DynamicFieldsScreenEnable(
+        %EnableScreens,
     );
 
     return 1;
@@ -599,84 +691,6 @@ sub _MigratePrimarySecondarySysConfigSettings {
     }
 
     $ZnunyHelperObject->_RebuildConfig();
-
-    return 1;
-}
-
-sub _MigrateToPrimarySecondary {
-    my ( $Self, %Param ) = @_;
-
-    my $CacheObject        = $Kernel::OM->Get('Kernel::System::Cache');
-    my $ConfigObject       = $Kernel::OM->Get('Kernel::Config');
-    my $DBObject           = $Kernel::OM->Get('Kernel::System::DB');
-    my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
-    my $LogObject          = $Kernel::OM->Get('Kernel::System::Log');
-    my $SysConfigObject    = $Kernel::OM->Get('Kernel::System::SysConfig');
-
-    # get dynamic field names from SysConfig
-    my $MasterSlaveDynamicField = $ConfigObject->Get('MasterSlave::DynamicField') || 'MasterSlave';
-
-    my $OldDynamicField = $DynamicFieldObject->DynamicFieldGet(
-        Name => $MasterSlaveDynamicField,
-    );
-    return 0 if !IsHashRefWithData($OldDynamicField);
-
-    # update the Label and FieldType of the dynamic field to PrimarySecondary
-    return 0 if !$DynamicFieldObject->DynamicFieldUpdate(
-        %{$OldDynamicField},
-        ID         => $OldDynamicField->{ID},
-        Name       => 'PrimarySecondary',
-        Label      => 'Primary Ticket',
-        FieldType  => 'PrimarySecondary',
-        ObjectType => 'Ticket',
-        Config     => {
-            DefaultValue       => '',
-            PossibleNone       => 1,
-            TranslatableValues => 1,
-        },
-        InternalField => 1,
-        ValidID       => 1,
-        Reorder       => 0,
-        UserID        => 1,
-    );
-
-    # update InternalField value manually since API does not support internal_field update
-    my $Success = $DBObject->Do(
-        SQL => '
-            UPDATE dynamic_field
-            SET internal_field = 1
-            WHERE id = ?',
-        Bind => [ \$OldDynamicField->{ID} ],
-    );
-    if ( !$Success ) {
-        $LogObject->Log(
-            Priority => 'error',
-            Message  => "Could not set dynamic field '$MasterSlaveDynamicField' as internal!",
-        );
-    }
-
-    # clean dynamic field cache
-    $CacheObject->CleanUp(
-        Type => 'DynamicField',
-    );
-
-    # activate the DynamicField in ticket details block
-    my $KeyString       = "Ticket::Frontend::AgentTicketZoom";
-    my $ExistingSetting = $ConfigObject->Get($KeyString) || {};
-    my %ValuesToSet     = %{ $ExistingSetting->{DynamicField} || {} };
-    $ValuesToSet{PrimarySecondary} = 1;
-
-    return if !$SysConfigObject->SettingsSet(
-        UserID   => 1,
-        Comments => 'Znuny-PrimarySecondary - deploy dynamic fields.',
-        Settings => [
-            {
-                Name           => $KeyString . "###DynamicField",
-                EffectiveValue => \%ValuesToSet,
-                IsValid        => 1,
-            },
-        ],
-    );
 
     return 1;
 }
