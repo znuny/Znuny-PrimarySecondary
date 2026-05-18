@@ -837,6 +837,36 @@ sub SearchFieldRender {
     return $Data;
 }
 
+sub StatsFieldParameterBuild {
+    my ( $Self, %Param ) = @_;
+
+    # set PossibleValues
+    my $Values = $Param{DynamicFieldConfig}->{Config}->{PossibleValues};
+
+    my $HistoricalValues = $Kernel::OM->Get('Kernel::System::DynamicFieldValue')->HistoricalValueGet(
+        FieldID   => $Param{DynamicFieldConfig}->{ID},
+        ValueType => 'Text,',
+    );
+
+    # add historic values to current values (if they don't exist anymore)
+    for my $Key ( sort keys %{$HistoricalValues} ) {
+        if ( !$Values->{$Key} ) {
+            $Values->{$Key} = $HistoricalValues->{$Key};
+        }
+    }
+
+    # use PossibleValuesFilter if defined
+    $Values = $Param{PossibleValuesFilter} // $Values;
+
+    return {
+        Values             => $Values,
+        Name               => $Param{DynamicFieldConfig}->{Label},
+        Element            => 'DynamicField_' . $Param{DynamicFieldConfig}->{Name},
+        TranslatableValues => $Param{DynamicFieldConfig}->{Config}->{TranslatableValues},
+        Block              => 'MultiSelectField',
+    };
+}
+
 1;
 
 =head1 TERMS AND CONDITIONS
