@@ -4,8 +4,7 @@ msgstr ""
 "POT-Creation-Date: 2023-03-13 10:45+0000\n"
 "PO-Revision-Date: 2026-07-31 15:00+0000\n"
 "Last-Translator: Balázs Úr <balazs@urbalazs.hu>\n"
-"Language-Team: Hungarian <https://translations.znuny.org/projects/znuny-lts/"
-"znuny-primarysecondary/hu/>\n"
+"Language-Team: Hungarian <https://translations.znuny.org/projects/znuny-lts/znuny-primarysecondary/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,9 +62,7 @@ msgstr "Összes másodlagos jegy"
 
 #. SysConfig
 msgid "Allows adding notes in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Lehetővé teszi jegyzetek hozzáadását egy nagyított jegynek a jegy elsődleges-"
-"másodlagos képernyőjén az ügyintézői felületen."
+msgstr "Lehetővé teszi jegyzetek hozzáadását egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Change the PrimarySecondary state of the ticket."
@@ -77,51 +74,31 @@ msgstr "Meghatározza a dinamikus mező nevét az elsődleges jegy funkcióhoz."
 
 #. SysConfig
 msgid "Defines if a ticket lock is required in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface (if the ticket isn't locked yet, the ticket gets locked and the current agent will be set automatically as its owner)."
-msgstr ""
-"Meghatározza, hogy jegyzárolás szükséges egy nagyított jegynek a jegy "
-"elsődleges-másodlagos képernyőjén az ügyintézői felületen (ha a jegy még "
-"nincs zárolva, a jegy zárolva lesz, és az aktuális ügyintéző automatikusan "
-"beállításra kerül annak tulajdonosaként)."
+msgstr "Meghatározza, hogy jegyzárolás szükséges egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen (ha a jegy még nincs zárolva, a jegy zárolva lesz, és az aktuális ügyintéző automatikusan beállításra kerül annak tulajdonosaként)."
 
 #. SysConfig
 msgid "Defines if the PrimarySecondary note is visible for the customer by default."
-msgstr ""
-"Meghatározza, hogy az elsődleges-másodlagos jegyzet alapértelmezetten "
-"látható legyen az ügyfélnek."
+msgstr "Meghatározza, hogy az elsődleges-másodlagos jegyzet alapértelmezetten látható legyen az ügyfélnek."
 
 #. SysConfig
 msgid "Defines the default next state of a ticket after adding a note, in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Meghatározza egy jegy alapértelmezett következő állapotát egy jegyzet "
-"hozzáadása után egy nagyított jegynek a jegy elsődleges-másodlagos "
-"képernyőjén az ügyintézői felületen."
+msgstr "Meghatározza egy jegy alapértelmezett következő állapotát egy jegyzet hozzáadása után egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Defines the default ticket priority in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Meghatározza az alapértelmezett jegyprioritást egy nagyított jegynek a jegy "
-"elsődleges-másodlagos képernyőjén az ügyintézői felületen."
+msgstr "Meghatározza az alapértelmezett jegyprioritást egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Defines the history comment for the ticket PrimarySecondary screen action, which gets used for ticket history in the agent interface."
-msgstr ""
-"Meghatározza az előzmények megjegyzést a jegy elsődleges-másodlagos képernyő "
-"művelethez, amelyet a jegy előzményeinél szoktak használni az ügyintézői "
-"felületen."
+msgstr "Meghatározza az előzmények megjegyzést a jegy elsődleges-másodlagos képernyő művelethez, amelyet a jegy előzményeinél szoktak használni az ügyintézői felületen."
 
 #. SysConfig
 msgid "Defines the history type for the ticket PrimarySecondary screen action, which gets used for ticket history in the agent interface."
-msgstr ""
-"Meghatározza az előzmények típusát a jegy elsődleges-másodlagos képernyő "
-"művelethez, amelyet a jegy előzményeinél szoktak használni az ügyintézői "
-"felületen."
+msgstr "Meghatározza az előzmények típusát a jegy elsődleges-másodlagos képernyő művelethez, amelyet a jegy előzményeinél szoktak használni az ügyintézői felületen."
 
 #. SysConfig
 msgid "Defines the next state of a ticket after adding a note, in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Meghatározza egy jegy következő állapotát egy jegyzet hozzáadása után egy "
-"nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői "
-"felületen."
+msgstr "Meghatározza egy jegy következő állapotát egy jegyzet hozzáadása után egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Enables the advanced PrimarySecondary part of the feature."
@@ -129,71 +106,39 @@ msgstr "Engedélyezi a funkció speciális elsődleges-másodlagos részét."
 
 #. SysConfig
 msgid "Enables the feature that secondary tickets follow the primary ticket to a new primary in the advanced PrimarySecondary mode."
-msgstr ""
-"Engedélyezi azt a funkciót, hogy a másodlagos jegyek kövessék az elsődleges "
-"jegyet egy új elsődlegesre a speciális elsődleges-másodlagos módban."
+msgstr "Engedélyezi azt a funkciót, hogy a másodlagos jegyek kövessék az elsődleges jegyet egy új elsődlegesre a speciális elsődleges-másodlagos módban."
 
 #. SysConfig
 msgid "Enables the feature to change the PrimarySecondary state of a ticket in the advanced PrimarySecondary mode."
-msgstr ""
-"Engedélyezi a funkciót egy jegy elsődleges-másodlagos állapotának "
-"megváltoztatásához a speciális elsődleges-másodlagos módban."
+msgstr "Engedélyezi a funkciót egy jegy elsődleges-másodlagos állapotának megváltoztatásához a speciális elsődleges-másodlagos módban."
 
 #. SysConfig
 msgid "Enables the feature to forward articles from type 'forward' of a primary ticket to the customers of the secondary tickets. By default (disabled) it will not forward articles from type 'forward' to the secondary tickets."
-msgstr ""
-"Engedélyezi a funkciót a bejegyzések továbbításához egy elsődleges jegy „"
-"továbbítás” típusából a másodlagos jegyek ügyfeleihez. Alapértelmezetten "
-"(letiltva) nem fog bejegyzéseket továbbítani a „továbbítás” típusból a "
-"másodlagos jegyekhez."
+msgstr "Engedélyezi a funkciót a bejegyzések továbbításához egy elsődleges jegy „továbbítás” típusából a másodlagos jegyek ügyfeleihez. Alapértelmezetten (letiltva) nem fog bejegyzéseket továbbítani a „továbbítás” típusból a másodlagos jegyekhez."
 
 #. SysConfig
 msgid "Enables the feature to keep parent-child link after change of the PrimarySecondary state in the advanced PrimarySecondary mode."
-msgstr ""
-"Engedélyezi az elsődleges-másodlagos állapot megváltoztatása utáni szülő-"
-"gyermek kapcsolat megtartását a speciális elsődleges-másodlagos módban."
+msgstr "Engedélyezi az elsődleges-másodlagos állapot megváltoztatása utáni szülő-gyermek kapcsolat megtartását a speciális elsődleges-másodlagos módban."
 
 #. SysConfig
 msgid "Enables the feature to keep parent-child link after unset of the PrimarySecondary state in the advanced PrimarySecondary mode."
-msgstr ""
-"Engedélyezi az elsődleges-másodlagos állapot beállításának megszüntetése "
-"utáni szülő-gyermek kapcsolat megtartását a speciális elsődleges-másodlagos "
-"módban."
+msgstr "Engedélyezi az elsődleges-másodlagos állapot beállításának megszüntetése utáni szülő-gyermek kapcsolat megtartását a speciális elsődleges-másodlagos módban."
 
 #. SysConfig
 msgid "Enables the feature to unset the PrimarySecondary state of a ticket in the advanced PrimarySecondary mode."
-msgstr ""
-"Engedélyezi a funkciót egy jegy elsődleges-másodlagos állapota beállításának "
-"megszüntetéséhez a speciális elsődleges-másodlagos módban."
+msgstr "Engedélyezi a funkciót egy jegy elsődleges-másodlagos állapota beállításának megszüntetéséhez a speciális elsődleges-másodlagos módban."
 
 #. SysConfig
 msgid "If a note is added by an agent, sets the state of the ticket in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Ha egy ügyintéző hozzáadott egy jegyzetet, akkor beállítja a jegy állapotát "
-"egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői "
-"felületen."
+msgstr "Ha egy ügyintéző hozzáadott egy jegyzetet, akkor beállítja a jegy állapotát egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Parameters for the dashboard backend of the primary tickets overview of the agent interface. \"Limit\" is the number of entries shown by default. \"Group\" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin is enabled by default or if the user needs to enable it manually. \"CacheTTLLocal\" is the cache time in minutes for the plugin."
-msgstr ""
-"Paraméterek az ügyintézői felület elsődleges jegyei áttekintőjének "
-"vezérlőpult háttérprogramjához. A „Limit” az alapértelmezetten megjelenített "
-"bejegyzések száma. A „Group” használható a hozzáférés korlátozásához a "
-"bővítményre (például Group: admin;csoport1;csoport2;). A „Default” jelzi, "
-"hogy a bővítmény alapértelmezetten engedélyezve van, vagy hogy a "
-"felhasználónak kézzel kell engedélyeznie azt. A „CacheTTLLocal” a bővítmény "
-"gyorsítótár ideje percben."
+msgstr "Paraméterek az ügyintézői felület elsődleges jegyei áttekintőjének vezérlőpult háttérprogramjához. A „Limit” az alapértelmezetten megjelenített bejegyzések száma. A „Group” használható a hozzáférés korlátozásához a bővítményre (például Group: admin;csoport1;csoport2;). A „Default” jelzi, hogy a bővítmény alapértelmezetten engedélyezve van, vagy hogy a felhasználónak kézzel kell engedélyeznie azt. A „CacheTTLLocal” a bővítmény gyorsítótár ideje percben."
 
 #. SysConfig
 msgid "Parameters for the dashboard backend of the secondary tickets overview of the agent interface. \"Limit\" is the number of entries shown by default. \"Group\" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin is enabled by default or if the user needs to enable it manually. \"CacheTTLLocal\" is the cache time in minutes for the plugin."
-msgstr ""
-"Paraméterek az ügyintézői felület másodlagos jegyei áttekintőjének "
-"vezérlőpult háttérprogramjához. A „Limit” az alapértelmezetten megjelenített "
-"bejegyzések száma. A „Group” használható a hozzáférés korlátozásához a "
-"bővítményre (például Group: admin;csoport1;csoport2;). A „Default” jelzi, "
-"hogy a bővítmény alapértelmezetten engedélyezve van, vagy hogy a "
-"felhasználónak kézzel kell engedélyeznie azt. A „CacheTTLLocal” a bővítmény "
-"gyorsítótár ideje percben."
+msgstr "Paraméterek az ügyintézői felület másodlagos jegyei áttekintőjének vezérlőpult háttérprogramjához. A „Limit” az alapértelmezetten megjelenített bejegyzések száma. A „Group” használható a hozzáférés korlátozásához a bővítményre (például Group: admin;csoport1;csoport2;). A „Default” jelzi, hogy a bővítmény alapértelmezetten engedélyezve van, vagy hogy a felhasználónak kézzel kell engedélyeznie azt. A „CacheTTLLocal” a bővítmény gyorsítótár ideje percben."
 
 #. SysConfig
 msgid "Primary / Secondary"
@@ -217,9 +162,7 @@ msgstr "A jegy esemény modul regisztrációja."
 
 #. SysConfig
 msgid "Required permissions to use the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjének "
-"használatához szükséges jogosultságok az ügyintézői felületen."
+msgstr "Egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjének használatához szükséges jogosultságok az ügyintézői felületen."
 
 #. SysConfig
 msgid "Secondary Tickets"
@@ -227,99 +170,65 @@ msgstr "Másodlagos jegyek"
 
 #. SysConfig
 msgid "Sets if Primary / Secondary field must be selected by the agent."
-msgstr ""
-"Beállítja, hogy az ügyintézőnek ki kell választania az elsődleges/másodlagos "
-"mezőt."
+msgstr "Beállítja, hogy az ügyintézőnek ki kell választania az elsődleges/másodlagos mezőt."
 
 #. SysConfig
 msgid "Sets the default body text for notes added in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Beállítja az alapértelmezett törzsszöveget egy nagyított jegynek a jegy "
-"elsődleges-másodlagos képernyőjén hozzáadott jegyzeteknél az ügyintézői "
-"felületen."
+msgstr "Beállítja az alapértelmezett törzsszöveget egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén hozzáadott jegyzeteknél az ügyintézői felületen."
 
 #. SysConfig
 msgid "Sets the default subject for notes added in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Beállítja az alapértelmezett tárgyat egy nagyított jegynek a jegy elsődleges-"
-"másodlagos képernyőjén hozzáadott jegyzeteknél az ügyintézői felületen."
+msgstr "Beállítja az alapértelmezett tárgyat egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén hozzáadott jegyzeteknél az ügyintézői felületen."
 
 #. SysConfig
 msgid "Sets the responsible agent of the ticket in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Beállítja a jegy felelős ügyintézőjét egy nagyított jegynek a jegy "
-"elsődleges-másodlagos képernyőjén az ügyintézői felületen."
+msgstr "Beállítja a jegy felelős ügyintézőjét egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Sets the service in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface (Ticket::Service needs to be activated)."
-msgstr ""
-"Beállítja a szolgáltatást egy nagyított jegynek a jegy elsődleges-másodlagos "
-"képernyőjén az ügyintézői felületen (a Ticket::Service modulnak aktiválva "
-"kell lennie)."
+msgstr "Beállítja a szolgáltatást egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen (a Ticket::Service modulnak aktiválva kell lennie)."
 
 #. SysConfig
 msgid "Sets the ticket owner in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Beállítja a jegy tulajdonosát egy nagyított jegynek a jegy elsődleges-"
-"másodlagos képernyőjén az ügyintézői felületen."
+msgstr "Beállítja a jegy tulajdonosát egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Sets the ticket type in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface (Ticket::Type needs to be activated)."
-msgstr ""
-"Beállítja a jegy típusát egy nagyított jegynek a jegy elsődleges-másodlagos "
-"képernyőjén az ügyintézői felületen (a Ticket::Type modulnak aktiválva kell "
-"lennie)."
+msgstr "Beállítja a jegy típusát egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen (a Ticket::Type modulnak aktiválva kell lennie)."
 
 #. SysConfig
 msgid "Shows a link in the menu to change the PrimarySecondary status of a ticket in the ticket zoom view of the agent interface."
-msgstr ""
-"Egy hivatkozást jelenít meg a menüben egy jegy elsődleges-másodlagos "
-"állapotának megváltoztatásához az ügyintézői felület jegynagyítás nézetében."
+msgstr "Egy hivatkozást jelenít meg a menüben egy jegy elsődleges-másodlagos állapotának megváltoztatásához az ügyintézői felület jegynagyítás nézetében."
 
 #. SysConfig
 msgid "Shows a list of all the involved agents on this ticket, in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Megjeleníti a jegynél részt vett összes ügyintéző listáját egy nagyított "
-"jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
+msgstr "Megjeleníti a jegynél részt vett összes ügyintéző listáját egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Shows a list of all the possible agents (all agents with note permissions on the queue/ticket) to determine who should be informed about this note, in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Megjeleníti az összes lehetséges ügyintéző listáját (minden ügyintéző, aki "
-"jegyzet jogosultsággal rendelkezik a várólistán vagy jegyen) annak "
-"meghatározásához, hogy kit kell értesíteni erről a jegyzetről egy nagyított "
-"jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
+msgstr "Megjeleníti az összes lehetséges ügyintéző listáját (minden ügyintéző, aki jegyzet jogosultsággal rendelkezik a várólistán vagy jegyen) annak meghatározásához, hogy kit kell értesíteni erről a jegyzetről egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Shows the ticket priority options in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Megjeleníti a jegyprioritás lehetőségeit egy nagyított jegynek a jegy "
-"elsődleges-másodlagos képernyőjén az ügyintézői felületen."
+msgstr "Megjeleníti a jegyprioritás lehetőségeit egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Shows the title field in the ticket PrimarySecondary screen of a zoomed ticket in the agent interface."
-msgstr ""
-"Megjeleníti a cím mezőt egy nagyított jegynek a jegy elsődleges-másodlagos "
-"képernyőjén az ügyintézői felületen."
+msgstr "Megjeleníti a cím mezőt egy nagyított jegynek a jegy elsődleges-másodlagos képernyőjén az ügyintézői felületen."
 
 #. SysConfig
 msgid "Specifies the different article communication channels where the real name from Primary ticket will be replaced with the one in the Secondary ticket."
-msgstr ""
-"Megadja a különböző bejegyzés kommunikációs csatornákat, ahol az elsődleges "
-"jegyben lévő valódi név ki lesz cserélve a másodlagos jegyben lévővel."
+msgstr "Megadja a különböző bejegyzés kommunikációs csatornákat, ahol az elsődleges jegyben lévő valódi név ki lesz cserélve a másodlagos jegyben lévővel."
 
 #. SysConfig
 msgid "This module activates Primary/Secondary field in new email and phone ticket screens."
-msgstr ""
-"Ez a modul bekapcsolja az elsődleges/másodlagos mezőt az új e-mail és "
-"telefonos jegy képernyőkön."
+msgstr "Ez a modul bekapcsolja az elsődleges/másodlagos mezőt az új e-mail és telefonos jegy képernyőkön."
 
 #. SysConfig
 msgid "This setting is deprecated and will be removed in further versions of ZnunyPrimarySecondary."
-msgstr ""
-"Ez a beállítás elavult, és el lesz távolítva a Znuny-PrimarySecondary csomag "
-"későbbi verzióiból."
+msgstr "Ez a beállítás elavult, és el lesz távolítva a Znuny-PrimarySecondary csomag későbbi verzióiból."
 
 #. SysConfig
 msgid "Ticket PrimarySecondary."
 msgstr "Jegy elsődleges-másodlagos."
+
