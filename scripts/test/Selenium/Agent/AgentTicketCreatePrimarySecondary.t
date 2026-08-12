@@ -171,19 +171,21 @@ $Selenium->RunTest(
         # Wait for AJAX to finish.
         $WaitForAJAX->();
 
-        $Selenium->find_element( "#customerSelectorInput", 'css' )->send_keys($TestCustomerLoginsEmail);
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#ToCustomer").length;' );
+
+        $Selenium->find_element( "#ToCustomer", 'css' )->send_keys($TestCustomerLoginsEmail);
         $Selenium->WaitFor(
             JavaScript =>
-                'return typeof($) === "function" && $("#customerSelectorInput").closest(".modCustomerSelector").find(".customerSelectorFieldSuggestItem:visible").length;'
+                'return typeof($) === "function" && $("#ToCustomer").closest(".modCustomerSelector").find(".customerSelectorFieldSuggestItem:visible").length;'
         );
         $Selenium->execute_script(
-            "var \$item = jQuery('#customerSelectorInput').closest('.modCustomerSelector')"
+            "var \$item = jQuery('#ToCustomer').closest('.modCustomerSelector')"
                 . ".find('.customerSelectorFieldSuggestItem:visible').first();"
                 . "if (\$item.length) { \$item.trigger('click'); }"
         );
         $Selenium->WaitFor(
             JavaScript =>
-                'return typeof($) === "function" && $("#customerSelectorInput").closest(".modCustomerSelector").find(".customerSelectorFieldInputSelectedCustomer").length;'
+                'return typeof($) === "function" && $("#ToCustomer").closest(".modCustomerSelector").find(".customerSelectorFieldInputSelectedCustomer").length;'
         );
 
         # Wait for AJAX to finish.
