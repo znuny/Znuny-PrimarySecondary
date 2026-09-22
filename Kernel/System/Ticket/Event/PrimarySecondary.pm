@@ -395,6 +395,24 @@ sub Run {
             return 1;
         }
 
+        # Get attachments in primary for usage in secondary tickets.
+        my %AttachmentIndex = $ArticleBackendObject->ArticleAttachmentIndex(
+            ArticleID => $Articles[-1]->{ArticleID},
+        );
+
+        my @Attachments;
+        ATTACHMENT:
+        for my $FileID ( sort keys %AttachmentIndex ) {
+            next ATTACHMENT if !$FileID;
+            my %Attachment = $ArticleBackendObject->ArticleAttachment(
+                ArticleID => $Articles[-1]->{ArticleID},
+                FileID    => $FileID,
+            );
+
+            next ATTACHMENT if !IsHashRefWithData( \%Attachment );
+            push @Attachments, {%Attachment};
+        }
+
         # perform action on linked tickets
         TICKETID:
         for my $TicketID (@TicketIDs) {
@@ -412,6 +430,7 @@ sub Run {
                 HistoryComment => 'Added article based on primary ticket.',
                 TicketID       => $TicketID,
                 UserID         => $Param{UserID},
+                Attachment     => \@Attachments,
             );
         }
 
