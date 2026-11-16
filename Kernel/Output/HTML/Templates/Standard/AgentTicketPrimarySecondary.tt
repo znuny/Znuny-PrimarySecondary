@@ -2,7 +2,7 @@
 # Copyright (C) 2001-2021 OTRS AG, https://otrs.com/
 # Copyright (C) 2021 Znuny GmbH, https://znuny.org/
 # --
-# $origin: znuny - ded9c741c09fe1dbcdad0c65b293f4c8fd470a9b - Kernel/Output/HTML/Templates/Standard/AgentTicketActionCommon.tt
+# $origin: Znuny - 17d00b85a8fcf11dc02be255b0adff4d616546f9 - Kernel/Output/HTML/Templates/Standard/AgentTicketActionCommon.tt
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -21,6 +21,9 @@
 [% RenderBlockStart("Properties") %]
     <main class="sectionContent">
         <div class="container-fluid ARIARoleMain" role="main">
+# ---
+# Znuny-PrimarySecondary
+# ---
 [% RenderBlockStart("HeaderAgentTicketPrimarySecondary") %]
             <div class="row">
                 <div class="col-12">
@@ -32,6 +35,7 @@
                 </div>
             </div>
 [% RenderBlockEnd("HeaderAgentTicketPrimarySecondary") %]
+# ---
             <div class="row">
                 <div class="col-xs-12 order-1">
                     <div class="mod modForm" >
@@ -72,7 +76,7 @@
                                     </div>
 
 [% IF TicketFrontendConfig.CustomerUser %]
-                                    <div class="col-12">
+                                    <div class="cardCustomerData col-12">
                                         <div class="mod modCard">
                                             <div class="inner">
                                                 <div class="cardTitle">
@@ -120,7 +124,7 @@
 [% END %]
 
 [% IF Config('Ticket::Service') && TicketFrontendConfig.Service %]
-                                    <div class="col-12">
+                                    <div class="cardServiceData col-12">
                                         <div class="mod modCard">
                                             <div class="inner">
                                                 <div class="cardTitle">
@@ -187,7 +191,7 @@
 [% END %]
 
 [% IF TicketFrontendConfig.Queue || TicketFrontendConfig.Owner || TicketFrontendConfig.Responsible %]
-                                    <div class="col-12">
+                                    <div class="cardTeamData col-12">
                                         <div class="mod modCard">
                                             <div class="inner">
                                                 <div class="cardTitle">
@@ -280,7 +284,7 @@
 
 [% IF TicketFrontendConfig.Title || TicketFrontendConfig.TicketType || TicketFrontendConfig.State || TicketFrontendConfig.Priority %]
 
-                                    <div class="col-12">
+                                    <div class="cardTicketData col-12">
                                         <div class="mod modCard">
                                             <div class="inner">
                                                 <div class="cardTitle">
@@ -398,7 +402,7 @@
 
 [% IF !TicketFrontendConfig.DynamicField.empty %]
 [% RenderBlockStart("TicketTypeDynamicFields") %]
-                                    <div class="col-12">
+                                    <div class="cardDynamicField col-12">
                                         <div class="mod modCard">
                                             <div class="inner">
                                                 <div class="cardTitle">
@@ -408,10 +412,10 @@
                                                 <div class="cardContent">
                                                     <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 gy-3">
 [% RenderBlockStart("TicketTypeDynamicField") %]
-                                                        <div class="col-12">
-                                                            <div class="mod modDynamicField">
-                                                                <div class="inner">
-                                                                    <div class="Row_DynamicField_[% Data.Name | html %] dynamicField dynamicField[% Data.Name | html %]">
+                                                        <div class="Row Row_DynamicField_[% Data.Name | html %] dynamicField dynamicField[% Data.Name | html %]">
+                                                            <div class="col-12">
+                                                                <div class="mod modDynamicField">
+                                                                    <div class="inner">
                                                                         <div class="dynamicFieldLabel">
                                                                             [% Data.Label %]
                                                                         </div>
@@ -433,9 +437,9 @@
 
 [% RenderBlockStart("WidgetArticle") %]
 
-                                    <div class="col-12">
+                                    <div class="cardCommunication col-12">
                                         <div class="mod modCard">
-                                            <div class="inner [% Data.CardStatus | html %]">
+                                            <div id="WidgetArticle" class="inner [% Data.CardStatus | html %]">
                                                 <div class="cardTitle">
                                                     <h2>[% Translate("Communications") | html %]</h2>
                                                     <span class="cardTitleTrigger"></span>
@@ -494,7 +498,7 @@
                                                     <div class="row gy-3">
                                                         <h2 class="card-title">[% Translate("Create an Article") | html %]</h2>
 
-                                                        [% IF Data.CardStatus != 'cardClosed' %]
+                                                        [% IF Data.CardStatus != 'Collapsed' %]
                                                         <input type="hidden" id="CreateArticle" name="CreateArticle" value="1" />
                                                         [% ELSE %]
                                                         <div class="col-12">
@@ -593,25 +597,26 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        <div class="col-12">
-                                                            <div class="Field no-background CheckboxContainer">
-                                                                <input type="checkbox" name="IsVisibleForCustomer" id="IsVisibleForCustomer"
-                                                                    [% IF Data.IsVisibleForCustomer %]checked="checked" [% END %]/>
-                                                                <label for="IsVisibleForCustomer">
-                                                                    [% Translate("Is visible for customer") | html %]:
-                                                                </label>
+                                                        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 gy-3">
+                                                            <div class="col-12">
+                                                                <div class="Field no-background CheckboxContainer">
+                                                                    <input type="checkbox" name="IsVisibleForCustomer" id="IsVisibleForCustomer"
+                                                                        [% IF Data.IsVisibleForCustomer %]checked="checked" [% END %]/>
+                                                                    <label for="IsVisibleForCustomer">
+                                                                        [% Translate("Is visible for customer") | html %]:
+                                                                    </label>
+                                                                </div>
                                                             </div>
-                                                        </div>
 [% RenderBlockStart("TimeUnits") %]
-                                                        <div class="col-12">
-                                                            [% Data.TimeUnitsBlock %]
-                                                        </div>
+                                                            <div class="col-12">
+                                                                [% Data.TimeUnitsBlock %]
+                                                            </div>
 [% RenderBlockEnd("TimeUnits") %]
+                                                        </div>
 
 [% IF !TicketFrontendConfig.DynamicField.empty %]
 [% RenderBlockStart("ArticleTypeDynamicFields") %]
-                                                        <div class="col-12">
+                                                        <div class="cardArticleDynamicField col-12">
                                                             <div class="mod modCard">
                                                                 <div class="inner">
                                                                     <div class="cardTitle">
@@ -621,10 +626,10 @@
                                                                     <div class="cardContent">
                                                                         <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 gy-3">
 [% RenderBlockStart("ArticleTypeDynamicField") %]
-                                                                            <div class="col-12">
-                                                                                <div class="mod modDynamicField">
-                                                                                    <div class="inner">
-                                                                                        <div class="Row_DynamicField_[% Data.Name | html %] dynamicField dynamicField[% Data.Name | html %]">
+                                                                            <div class="Row Row_DynamicField_[% Data.Name | html %] dynamicField dynamicField[% Data.Name | html %]">
+                                                                                <div class="col-12">
+                                                                                    <div class="mod modDynamicField">
+                                                                                        <div class="inner">
                                                                                             <div class="dynamicFieldLabel">
                                                                                                 [% Data.Label %]
                                                                                             </div>

@@ -2,7 +2,7 @@
 # Copyright (C) 2001-2021 OTRS AG, https://otrs.com/
 # Copyright (C) 2021 Znuny GmbH, https://znuny.org/
 # --
-# $origin: znuny - ded9c741c09fe1dbcdad0c65b293f4c8fd470a9b - Kernel/Modules/AgentTicketActionCommon.pm
+# $origin: Znuny - 7764301d9b277c21629182c35bc06730e6c64b45 - Kernel/Modules/AgentTicketActionCommon.pm
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1212,7 +1212,7 @@ sub Run {
             my $BodyText = $LayoutObject->RichText2Ascii(
                 String => $GetParam{Body} || '',
             );
-            if ( $GetParam{NewOwnerID} ) {
+            if ( $GetParam{NewOwnerID} && $GetParam{NewOwnerID} ne $Ticket{OwnerID} ) {
                 $TicketObject->TicketLockSet(
                     TicketID => $Self->{TicketID},
                     Lock     => 'lock',
@@ -2551,7 +2551,7 @@ sub _Mask {
             Class => 'Modernize '
                 . ( $Config->{StateMandatory} ? 'Validate_Required ' : '' )
                 . ( $Param{NewStateInvalid} || '' ),
-            PossibleNone => 1,
+            PossibleNone => $Config->{StateDefault} ? 0 : 1,
             SelectedID   => $Selected{StateID},
         );
 
@@ -2602,7 +2602,6 @@ sub _Mask {
     # get priority
     if ( $Config->{Priority} ) {
 
-        my %Priority;
         my %PriorityList = $TicketObject->TicketPriorityList(
             UserID   => $Self->{UserID},
             TicketID => $Self->{TicketID},
@@ -2621,7 +2620,7 @@ sub _Mask {
             }
         }
         else {
-            $Priority{SelectedID} = $Param{NewPriorityID};
+            $Selected{PriorityID} = $Param{NewPriorityID};
         }
 
         $Param{PriorityStrg} = $LayoutObject->BuildSelection(
@@ -2666,7 +2665,7 @@ sub _Mask {
     # Widget Article
     if ( $Config->{Note} ) {
 
-        $Param{CardStatus} = 'cardClosed';
+        $Param{CardStatus} = 'Collapsed';
 
         if (
             $Config->{NoteMandatory}
@@ -2675,7 +2674,7 @@ sub _Mask {
             || $Param{CreateArticle}
             )
         {
-            $Param{CardStatus} = '';
+            $Param{CardStatus} = 'Expanded';
         }
 
         if (
